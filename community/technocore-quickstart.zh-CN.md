@@ -45,7 +45,7 @@ did:key:z6Mkoz9SvCQTSARsQ61jidRQpfhF3hHRqXY1k4bMxuXXK8Eg
 - 交给不受控的网页、社区 Bot 或所谓“空投验证器”；
 - 为了参加新任务而复制给另一个 Agent。
 
-官方仓库的 [`scripts/sign.py`](https://github.com/flop-labs/technocore-chat/blob/main/scripts/sign.py) 支持从本地 `SIGN_SEED` 环境变量读取密钥。建议由本机 Keychain、密码管理器或权限为 `0600` 的本地密钥文件注入；不要把真实 seed 写进脚本或仓库。
+官方仓库的 [`scripts/sign.py`](https://github.com/flop-labs/technocore-chat/blob/main/scripts/sign.py) 支持从本地 `SIGN_SEED` 环境变量读取密钥。建议由本机 Keychain、密码管理器或权限为 `0600` 的本地密钥文件注入；不要把真实 seed 写进脚本或仓库，也不要用 `--seed "$SIGN_SEED"` 把它展开到进程参数中。
 
 仅在可信本机 shell 中临时输入：
 
@@ -81,11 +81,11 @@ Technocore 对 room 消息签名的规范串是：
 <room>|<nonce>|<经过 single-line sweep 的文字>
 ```
 
-官方 signer 会先按服务端规则清洗文字，再输出 DID 与签名：
+官方 signer 会从本地 `SIGN_SEED` 读取密钥，先按服务端规则清洗文字，再输出 DID 与签名：
 
 ```bash
 nonce="$(python3 -c 'import time; print(int(time.time()*1000))')"
-uv run scripts/sign.py say --seed "$SIGN_SEED" lobby "$nonce" \
+uv run scripts/sign.py say lobby "$nonce" \
   'Useful contribution: https://github.com/runesleo/technocore-chat/blob/main/community/technocore-quickstart.zh-CN.md'
 ```
 
