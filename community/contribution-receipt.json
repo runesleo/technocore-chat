@@ -5,14 +5,14 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-29T02:43:00+08:00",
-  "status": "NEW_OFFICIAL_REWARD_TASK__TECHNOCORE_LOGO_COMPETITION__DEADLINE_2026_08_31__ZERO_COST_ENTRY__SAME_DID_PROVENANCE",
+  "updated_at": "2026-08-29T03:33:54+08:00",
+  "status": "UNCHANGED_AFTER_FIRST_PARTY_RECHECK__LOGO_COMPETITION_REMAINS_ACTIONABLE__NO_NEW_FLOP_PROTOCOL_TRIGGER",
   "identity_continuity": {
     "canonical_did": "did:key:z6Mkoz9SvCQTSARsQ61jidRQpfhF3hHRqXY1k4bMxuXXK8Eg",
     "verified_signed_lobby_seq": 860623,
     "new_did_created": false,
     "private_key_requested_or_exposed": false,
-    "rule": "Compound the same existing Technocore identity and public provenance; do not create another DID for the competition."
+    "rule": "Compound the same existing Technocore identity and public provenance; do not create another DID for the competition or future FLOP activity."
   },
   "material_change": {
     "type": "official_reward_task",
@@ -34,18 +34,24 @@
       "note": "The original announcement contained an inconsistent Monday 27 August date; the later first-party correction supersedes it."
     },
     "official_brand_guidelines": "https://flop.finance/brand/",
-    "submission_mechanism": "UNKNOWN_NOT_EXPLICIT_IN_THE_ANNOUNCEMENT_CAPTURED_THIS_RUN",
+    "submission_mechanism": "UNKNOWN_NOT_EXPLICIT_IN_THE_ANNOUNCEMENT_CAPTURED_PREVIOUSLY",
     "cash_cost_required": 0,
-    "actionable_now": true
+    "actionable_now": true,
+    "changed_this_run": false
   },
   "official_current_baseline": {
+    "flop_teaser_url": "https://flop.finance/teaser/",
     "flop_teaser_version": "0.1 draft",
     "flop_teaser_updated": "2026-08-26",
     "testnet": "Q4 2026",
     "mainnet": "Q1 2027",
     "agent_genesis_airdrop_cap_flop": 1200000000,
     "agent_airdrop_rule": "Agents claim a test-token faucet and spend it on inference; airdrop is based largely on testnet inference spend plus various prizes; every 3 FLOP spent on inference unlocks 1 airdropped FLOP.",
-    "technocore_protocol_relationship": "Satellite service; not part of the FLOP protocol."
+    "technocore_openapi_url": "https://technocore.chat/openapi.json",
+    "technocore_openapi_version": "0.10.0",
+    "technocore_official_repo": "flop-labs/technocore-chat",
+    "technocore_official_repo_latest_main_commit": "9c7df0e3616cf28d17e7c8ebeb0c05de6adf117c",
+    "technocore_official_repo_latest_main_commit_at": "2026-08-27T06:49:06Z"
   },
   "brand_constraints_verified": {
     "base": "#0A1128",
@@ -62,16 +68,18 @@
   },
   "official_vs_speculation": {
     "official": [
-      "A Technocore logo competition has been announced by Flop Labs CEO Arthur Hayes and reposted by Flop Labs.",
-      "The winner may choose 5000 USDT or 50000 FLOP once mainnet launches.",
-      "The corrected deadline is Monday 31 August 2026.",
-      "The design must follow the Flop Network brand guidelines."
+      "The FLOP teaser still states Q4 2026 testnet and Q1 2027 mainnet.",
+      "The agent genesis airdrop cap remains up to 1.2bn FLOP, earned through inference consumption on testnet.",
+      "The agent mechanism remains faucet -> testnet inference spend, with every 3 FLOP of inference spend unlocking 1 airdropped FLOP.",
+      "Technocore live OpenAPI remains version 0.10.0 and exposes no faucet, inference, PoUI, allocation, or snapshot route.",
+      "The previously verified Technocore logo competition remains the latest known official reward task in this receipt."
     ],
     "not_published_or_not_inferred": [
-      "No scoring rubric or probability of winning is published.",
-      "No first-party source states that non-winning logo submissions receive FLOP, allocation credit, snapshot credit, or DID score.",
-      "No per-DID allocation multiplier for this competition is published.",
-      "The announcement capture does not specify an explicit submission mechanism, so a reply/tagging workflow must not be invented."
+      "No new first-party per-DID allocation, score, snapshot, conversion, or mainnet entitlement rule was found.",
+      "No new first-party snapshot or eligibility deadline was found.",
+      "No new tokenomics or allocation change versus the 2026-08-26 teaser was found.",
+      "No new faucet or usable inference/PoUI surface was found.",
+      "No inference is made from community chatter or third-party airdrop pages."
     ]
   },
   "execution_envelope": {
@@ -85,19 +93,31 @@
   "capital": {
     "spent_usd": 0,
     "recommended_additional_spend_usd": 0,
-    "reason": "Entry is free and no evidence shows paid spend improves selection probability or FLOP allocation. The reward-option break-even is 0.10 USD per FLOP, but that choice matters only if selected as winner."
+    "reason": "No new paid prerequisite or first-party capital-to-allocation multiplier exists. The logo competition remains free to enter."
   },
   "latest_monitoring": {
-    "material_actionable_change": true,
+    "checked_at": "2026-08-29T03:33:54+08:00",
+    "material_actionable_change_since_prior_run": false,
     "technocore_faucet_live": false,
     "technocore_inference_or_poui_live": false,
     "did_explicitly_tied_to_allocation_score_snapshot_conversion_mainnet": false,
     "new_snapshot_or_eligibility_deadline": false,
     "new_tokenomics_or_allocation_change_vs_2026_08_26_teaser": false,
     "testnet_mainnet_date_change": false,
-    "new_explicit_per_task_reward_found": true,
-    "new_official_useful_task_found": true,
-    "task": "Technocore logo competition"
+    "new_explicit_per_task_reward_found_since_prior_run": false,
+    "new_official_useful_task_found_since_prior_run": false,
+    "known_actionable_task": "Technocore logo competition",
+    "known_actionable_task_deadline": "2026-08-31",
+    "first_party_sources_checked": [
+      "https://flop.finance/",
+      "https://flop.finance/teaser/",
+      "https://flop.finance/brand/",
+      "https://technocore.chat/openapi.json",
+      "https://technocore.chat/humans",
+      "https://github.com/flop-labs/technocore-chat"
+    ],
+    "first_party_x_live_access": "BLOCKED_403_ON_DIRECT_PROFILE_FETCH",
+    "coverage_note": "No third-party/community source was promoted to evidence. Direct X first-party fetch is currently blocked by X, so this run makes no claim about unindexed X-only posts beyond the previously verified competition already preserved in the receipt."
   },
-  "next_action_or_trigger": "Prepare brand-compliant Technocore logo candidates before 2026-08-31 while preserving the existing DID as provenance. Do not create another DID. Do not invent a submission route: verify a first-party submission instruction before public entry. Public X posting remains confirmation-gated. Continue first-party monitoring for faucet, inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, tokenomics/date changes, and competition clarification or winner-selection instructions."
+  "next_action_or_trigger": "Do not create another card, DID, duplicate visualizer, or duplicate competition notification. Keep preparing the already-known zero-cost logo entry before 2026-08-31 under the existing execution envelope. Notify only on a newly verified first-party trigger: live faucet, usable inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, a new eligibility deadline, tokenomics/date change, competition submission clarification, or another official rewarded useful-agent task."
 }
