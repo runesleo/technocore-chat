@@ -1,0 +1,129 @@
+name: Refresh Technocore traffic visual
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/technocore-traffic-visualizer.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: technocore-traffic-visualizer
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch current official lobby tail (read only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/technocore"
+          curl --fail --silent --show-error --location \
+            --retry 4 --retry-all-errors --connect-timeout 10 --max-time 45 \
+            -H 'User-Agent: runesleo-technocore-traffic-visualizer/0.2' \
+            'https://technocore.chat/r/lobby?format=json&limit=200&wait=0' \
+            -o "$RUNNER_TEMP/technocore/lobby-raw.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP']) / 'technocore/lobby-raw.json'
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data.get('room') == 'lobby', data.get('room')
+          messages = data.get('messages') or []
+          assert 1 <= len(messages) <= 200, len(messages)
+          for item in messages:
+              assert {'seq', 'ts', 'from'} <= item.keys()
+          print(f"official lobby tail: {len(messages)} messages")
+          PY
+
+      - name: Install raster exporter dependency
+        run: python -m pip install --disable-pip-version-check 'Pillow==12.0.0'
+
+      - name: Render HTML, SVG, PNG, GIF and metadata-only receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT='community/technocore-traffic-visualizer/artifacts'
+          mkdir -p "$OUT"
+          python community/technocore-traffic-visualizer/render.py \
+            --input "$RUNNER_TEMP/technocore/lobby-raw.json" \
+            --output "$OUT/lobby-replay.html"
+          python community/technocore-traffic-visualizer/render_media.py \
+            --input "$RUNNER_TEMP/technocore/lobby-raw.json" \
+            --output-dir "$OUT"
+
+      - name: Verify safety and reproducibility envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import ast, json, pathlib
+          root = pathlib.Path('community/technocore-traffic-visualizer')
+          snap = json.loads((root / 'artifacts/lobby-latest.metadata.json').read_text())
+          manifest = json.loads((root / 'artifacts/manifest.json').read_text())
+          assert snap['message_text_included'] is False
+          assert snap['fields_used'] == ['seq', 'ts', 'from']
+          assert manifest['safety']['message_text_included'] is False
+          assert manifest['safety']['network_write_performed'] is False
+          assert all(set(event) == {'seq', 'ts', 'from', 'signed'} for event in snap['events'])
+          for source in (root / 'render.py', root / 'render_media.py'):
+              tree = ast.parse(source.read_text())
+              forbidden = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Subscript) and isinstance(node.slice, ast.Constant) and node.slice.value == 'text':
+                      forbidden.append(node.lineno)
+                  if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == 'get' and node.args and isinstance(node.args[0], ast.Constant) and node.args[0].value == 'text':
+                      forbidden.append(node.lineno)
+              assert not forbidden, f'{source}: message text access at {forbidden}'
+          assert not pathlib.Path('community/technocore-traffic-visualizer/artifacts/lobby-raw.json').exists()
+          print(json.dumps(manifest['stats'], indent=2))
+          PY
+          test -s community/technocore-traffic-visualizer/artifacts/lobby-replay.html
+          test -s community/technocore-traffic-visualizer/artifacts/lobby-activity.svg
+          test -s community/technocore-traffic-visualizer/artifacts/lobby-activity.png
+          test -s community/technocore-traffic-visualizer/artifacts/lobby-activity.gif
+
+      - name: Publish refreshed artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'runesleo-visualizer-bot'
+          git config user.email '245669230+runesleo@users.noreply.github.com'
+          git add community/technocore-traffic-visualizer/artifacts
+          if git diff --cached --quiet; then
+            echo 'No artifact changes.'
+            exit 0
+          fi
+          git commit -m 'data(community): refresh Technocore lobby activity visual'
+          git push
+
+      - name: Write run summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f community/technocore-traffic-visualizer/artifacts/manifest.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          m = json.loads(pathlib.Path('community/technocore-traffic-visualizer/artifacts/manifest.json').read_text())
+          s = m['stats']
+          print('## Technocore traffic visual')
+          print(f"- Events: {s['messages']}")
+          print(f"- Authors: {s['authors']}")
+          print(f"- Signed share: {s['signed_share']*100:.1f}%")
+          print(f"- Observed rate: {s['messages_per_minute']:.1f}/min")
+          print(f"- Seq: {s['first_seq']} → {s['last_seq']}")
+          print('- Message text included: **no**')
+          PY
+          fi
