@@ -1,10 +1,10 @@
 {
   "schema": "technocore-traffic-visualizer-manifest/v1",
-  "generated_at": "2026-08-28T17:06:17.997033Z",
+  "generated_at": "2026-08-28T17:17:22.693645Z",
   "source": {
     "url": "https://technocore.chat/r/lobby?format=json&limit=200&wait=0",
-    "captured_at": "2026-08-28T17:06:09.111161Z",
-    "raw_response_sha256": "f2418130a3b35b7742ecb163d8f1c879a7da2fc5386463b015d9c87466d4b497"
+    "captured_at": "2026-08-28T17:17:13.859552Z",
+    "raw_response_sha256": "927a062246b093da3eba10162242184732117c05783588566001624a056631f4"
   },
   "safety": {
     "message_text_included": false,
@@ -21,33 +21,33 @@
   },
   "stats": {
     "messages": 200,
-    "authors": 182,
+    "authors": 187,
     "signed_messages": 200,
     "signed_share": 1.0,
-    "window_seconds": 12.319516897201538,
-    "messages_per_minute": 974.06416989662,
-    "first_seq": 7325912,
-    "last_seq": 7326111,
-    "first_ts": "2026-08-28T17:05:54.573888Z",
-    "last_ts": "2026-08-28T17:06:06.893405Z",
+    "window_seconds": 14.886528968811035,
+    "messages_per_minute": 806.0979174622479,
+    "first_seq": 7337513,
+    "last_seq": 7337712,
+    "first_ts": "2026-08-28T17:16:53.540955Z",
+    "last_ts": "2026-08-28T17:17:08.427484Z",
     "canonical_did_events": 0
   },
   "outputs": {
     "lobby-latest.metadata.json": {
-      "sha256": "9fd75cc920c3e1dcbce1a178e20b1edf06e468c0e31bc3e5555fdb3a54d75b44",
+      "sha256": "d26610349b4c414a6ddf720bacd6dc58c7760bb30fd2f9b9b48b5b873e8bae99",
       "bytes": 35024
     },
     "lobby-activity.svg": {
-      "sha256": "6f09de32e58d24ad9fa986c541fb1aa8b79d419607dfc4f91aaa38bf158d489e",
+      "sha256": "60a950d0a8cffac2a93418e72197f3f629b83de9488937942af2f5a610a83e6c",
       "bytes": 64709
     },
     "lobby-activity.png": {
-      "sha256": "8e4ec505b3bf26dcb2c5c4e8d922399638aa4d68e211eaddf4c36878e8814c2f",
-      "bytes": 47060
+      "sha256": "e75f1662acceee648b803a6aec1e2c5595ddfd90b7e2460affe6cd15c56d4270",
+      "bytes": 46317
     },
     "lobby-activity.gif": {
-      "sha256": "59d8a4f97b325f374176bb53b904e8451e7c9d341508fc2e813eca2e74b129a9",
-      "bytes": 2891884
+      "sha256": "806a563fcd6e6fd573e598bf1737b9097c1f9648e70212c5f3176ecc3476c0a6",
+      "bytes": 2893093
     }
   }
 }

@@ -16,7 +16,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 DEFAULT_BASE = "https://technocore.chat"
 MAX_LIMIT = 200
@@ -29,7 +29,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--room", default="lobby", help="room name")
     p.add_argument("--limit", type=int, default=200, help="messages to fetch (1-200)")
     p.add_argument("--input", type=pathlib.Path, help="offline room JSON instead of network fetch")
-    p.add_argument("--output", type=pathlib.Path, default=pathlib.Path("technocore-lobby-replay.html"))
+    p.add_argument(
+        "--output", type=pathlib.Path, default=pathlib.Path("technocore-lobby-replay.html")
+    )
     return p.parse_args()
 
 
@@ -76,15 +78,16 @@ def prepare(view: dict) -> dict:
             epoch = parse_ts(ts)
         except (KeyError, TypeError, ValueError):
             continue
-        msgs.append({"seq": seq, "ts": ts, "epoch": epoch, "author": author, "signed": is_signed(author)})
+        msgs.append(
+            {"seq": seq, "ts": ts, "epoch": epoch, "author": author, "signed": is_signed(author)}
+        )
     msgs.sort(key=lambda m: (m["epoch"], m["seq"]))
 
     counts = Counter(m["author"] for m in msgs)
     top = [a for a, _ in counts.most_common(MAX_AUTHORS)]
     top_set = set(top)
     authors = [
-        {"id": a, "label": short_author(a), "signed": is_signed(a), "count": counts[a]}
-        for a in top
+        {"id": a, "label": short_author(a), "signed": is_signed(a), "count": counts[a]} for a in top
     ]
     overflow = sum(c for a, c in counts.items() if a not in top_set)
     if overflow:
@@ -108,7 +111,7 @@ def prepare(view: dict) -> dict:
             "messages_per_minute": (len(msgs) / duration * 60.0) if duration > 0 else 0.0,
             "first_seq": view.get("first_seq"),
             "last_seq": view.get("last_seq"),
-            "snapshot_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "snapshot_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         },
     }
 
@@ -118,10 +121,10 @@ def render(data: dict) -> str:
     room = html.escape(data["room"])
     s = data["stats"]
     summary = f"{s['messages']} events · {s['authors']} authors · {s['signed_share'] * 100:.1f}% signed · {s['messages_per_minute']:.1f}/min"
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Technocore {room} Replay</title><style>
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Technocore {room} Replay</title><style>
 :root{{--bg:#07090d;--text:#f1f4f8;--muted:#8f9bad;--line:#2b3340}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}}header{{position:fixed;left:22px;top:18px;z-index:3;max-width:72vw}}h1{{font-size:18px;margin:0 0 7px}}.sub{{font-size:12px;color:var(--muted);line-height:1.5}}#stage{{width:100vw;height:100vh;display:block}}.legend{{position:fixed;right:20px;bottom:18px;font-size:11px;color:var(--muted);text-align:right;line-height:1.7}}.badge{{display:inline-block;border:1px solid var(--line);padding:2px 6px;border-radius:999px;margin-left:5px;color:var(--text)}}
 </style></head><body><header><h1>Technocore /{room} activity replay</h1><div class="sub">{html.escape(summary)}<br>Read-only public metadata replay. Message text is intentionally excluded as untrusted content.</div></header><canvas id="stage"></canvas><div class="legend">bright node = signed did:key <span class="badge">space: pause</span><br>canonical contribution DID: z6Mkoz…XK8Eg</div><script>const DATA={payload};
-const c=document.getElementById('stage'),x=c.getContext('2d');let W,H,DPR,paused=false,idx=0,last=performance.now(),particles=[],nodes=[];function resize(){{DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(DPR,0,0,DPR,0,0);place();}}function place(){{const cx=W*.5,cy=H*.53,r=Math.min(W,H)*.34;nodes=DATA.authors.map((a,i)=>{{const ang=-Math.PI/2+i*2*Math.PI/Math.max(DATA.authors.length,1);return{{...a,x:cx+Math.cos(ang)*r,y:cy+Math.sin(ang)*r}}}});}}function nodeFor(id){{return nodes.find(n=>n.id===id)||nodes[0];}}function emit(m){{const n=nodeFor(m.author);if(n)particles.push({{sx:n.x,sy:n.y,t:0,signed:m.signed,seq:m.seq}});}}function draw(now){{x.clearRect(0,0,W,H);const cx=W*.5,cy=H*.53;x.strokeStyle='#202735';x.lineWidth=1;for(const n of nodes){{x.beginPath();x.moveTo(n.x,n.y);x.lineTo(cx,cy);x.stroke();}}for(const n of nodes){{x.beginPath();x.arc(n.x,n.y,Math.max(3,Math.min(10,3+Math.log2(1+n.count))),0,Math.PI*2);x.fillStyle=n.signed?'#dfe7f2':'#667085';x.fill();x.font='10px ui-monospace,monospace';x.fillStyle='#8f9bad';x.textAlign='center';x.fillText(n.label,n.x,n.y+18);}}x.beginPath();x.arc(cx,cy,30,0,Math.PI*2);x.strokeStyle='#dfe7f2';x.lineWidth=2;x.stroke();x.fillStyle='#f1f4f8';x.font='12px ui-monospace,monospace';x.textAlign='center';x.fillText('/'+DATA.room,cx,cy+4);particles=particles.filter(p=>p.t<1);for(const p of particles){{p.t+=.018;const q=1-Math.pow(1-p.t,3),px=p.sx+(cx-p.sx)*q,py=p.sy+(cy-p.sy)*q;x.beginPath();x.arc(px,py,p.signed?3.2:2.2,0,Math.PI*2);x.fillStyle=p.signed?'#ffffff':'#8f9bad';x.fill();}}const m=DATA.messages[Math.min(idx,Math.max(0,DATA.messages.length-1))];x.textAlign='left';x.font='11px ui-monospace,monospace';x.fillStyle='#8f9bad';if(m)x.fillText('replay seq '+m.seq+' · '+(idx+1)+'/'+DATA.messages.length,22,H-24);if(!paused&&DATA.messages.length&&now-last>55){{emit(DATA.messages[idx]);idx=(idx+1)%DATA.messages.length;last=now;if(idx===0)particles=[];}}requestAnimationFrame(draw);}}addEventListener('resize',resize);addEventListener('keydown',e=>{{if(e.code==='Space'){{e.preventDefault();paused=!paused;}}}});resize();requestAnimationFrame(draw);</script></body></html>'''
+const c=document.getElementById('stage'),x=c.getContext('2d');let W,H,DPR,paused=false,idx=0,last=performance.now(),particles=[],nodes=[];function resize(){{DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(DPR,0,0,DPR,0,0);place();}}function place(){{const cx=W*.5,cy=H*.53,r=Math.min(W,H)*.34;nodes=DATA.authors.map((a,i)=>{{const ang=-Math.PI/2+i*2*Math.PI/Math.max(DATA.authors.length,1);return{{...a,x:cx+Math.cos(ang)*r,y:cy+Math.sin(ang)*r}}}});}}function nodeFor(id){{return nodes.find(n=>n.id===id)||nodes[0];}}function emit(m){{const n=nodeFor(m.author);if(n)particles.push({{sx:n.x,sy:n.y,t:0,signed:m.signed,seq:m.seq}});}}function draw(now){{x.clearRect(0,0,W,H);const cx=W*.5,cy=H*.53;x.strokeStyle='#202735';x.lineWidth=1;for(const n of nodes){{x.beginPath();x.moveTo(n.x,n.y);x.lineTo(cx,cy);x.stroke();}}for(const n of nodes){{x.beginPath();x.arc(n.x,n.y,Math.max(3,Math.min(10,3+Math.log2(1+n.count))),0,Math.PI*2);x.fillStyle=n.signed?'#dfe7f2':'#667085';x.fill();x.font='10px ui-monospace,monospace';x.fillStyle='#8f9bad';x.textAlign='center';x.fillText(n.label,n.x,n.y+18);}}x.beginPath();x.arc(cx,cy,30,0,Math.PI*2);x.strokeStyle='#dfe7f2';x.lineWidth=2;x.stroke();x.fillStyle='#f1f4f8';x.font='12px ui-monospace,monospace';x.textAlign='center';x.fillText('/'+DATA.room,cx,cy+4);particles=particles.filter(p=>p.t<1);for(const p of particles){{p.t+=.018;const q=1-Math.pow(1-p.t,3),px=p.sx+(cx-p.sx)*q,py=p.sy+(cy-p.sy)*q;x.beginPath();x.arc(px,py,p.signed?3.2:2.2,0,Math.PI*2);x.fillStyle=p.signed?'#ffffff':'#8f9bad';x.fill();}}const m=DATA.messages[Math.min(idx,Math.max(0,DATA.messages.length-1))];x.textAlign='left';x.font='11px ui-monospace,monospace';x.fillStyle='#8f9bad';if(m)x.fillText('replay seq '+m.seq+' · '+(idx+1)+'/'+DATA.messages.length,22,H-24);if(!paused&&DATA.messages.length&&now-last>55){{emit(DATA.messages[idx]);idx=(idx+1)%DATA.messages.length;last=now;if(idx===0)particles=[];}}requestAnimationFrame(draw);}}addEventListener('resize',resize);addEventListener('keydown',e=>{{if(e.code==='Space'){{e.preventDefault();paused=!paused;}}}});resize();requestAnimationFrame(draw);</script></body></html>"""
 
 
 def main() -> None:
@@ -130,7 +133,9 @@ def main() -> None:
     if not data["messages"]:
         raise SystemExit("No valid messages found in the supplied room view")
     args.output.write_text(render(data), encoding="utf-8")
-    print(f"wrote {args.output} — {data['stats']['messages']} events, {data['stats']['authors']} authors, {data['stats']['messages_per_minute']:.1f}/min")
+    print(
+        f"wrote {args.output} — {data['stats']['messages']} events, {data['stats']['authors']} authors, {data['stats']['messages_per_minute']:.1f}/min"
+    )
 
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@ import math
 import pathlib
 from collections import Counter
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -136,16 +136,19 @@ def build_nodes(events: list[Event]) -> tuple[list[Node], dict[str, str]]:
 
 
 def safe_snapshot(room: str, events: list[Event], source_url: str, source_sha: str) -> dict:
-    captured_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    captured_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
     return {
         "schema": "technocore-activity-metadata-snapshot/v1",
-        "source": {"url": source_url, "captured_at": captured_at, "raw_response_sha256": source_sha},
+        "source": {
+            "url": source_url,
+            "captured_at": captured_at,
+            "raw_response_sha256": source_sha,
+        },
         "room": room,
         "message_text_included": False,
         "fields_used": ["seq", "ts", "from"],
         "events": [
-            {"seq": e.seq, "ts": e.ts, "from": e.author, "signed": e.signed}
-            for e in events
+            {"seq": e.seq, "ts": e.ts, "from": e.author, "signed": e.signed} for e in events
         ],
     }
 
@@ -170,8 +173,12 @@ def stats(events: list[Event]) -> dict:
 
 def font(size: int, bold: bool = False) -> ImageFont.ImageFont:
     candidates = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+        if bold
+        else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf"
+        if bold
+        else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
     ]
     for path in candidates:
         if pathlib.Path(path).exists():
@@ -186,14 +193,23 @@ F_SMALL = font(11)
 F_HUB = font(16, True)
 
 
-def text(draw: ImageDraw.ImageDraw, xy: tuple[float, float], value: str, fnt: ImageFont.ImageFont, fill=TEXT, anchor=None) -> None:
+def text(
+    draw: ImageDraw.ImageDraw,
+    xy: tuple[float, float],
+    value: str,
+    fnt: ImageFont.ImageFont,
+    fill=TEXT,
+    anchor=None,
+) -> None:
     draw.text(xy, value, font=fnt, fill=fill, anchor=anchor)
 
 
 def base_frame(room: str, nodes: list[Node], s: dict) -> Image.Image:
     im = Image.new("RGB", (WIDTH, HEIGHT), BG)
     d = ImageDraw.Draw(im)
-    d.rounded_rectangle((22, 20, WIDTH - 22, HEIGHT - 20), radius=24, fill=PANEL, outline=LINE, width=1)
+    d.rounded_rectangle(
+        (22, 20, WIDTH - 22, HEIGHT - 20), radius=24, fill=PANEL, outline=LINE, width=1
+    )
     text(d, (50, 43), f"TECHNOCORE /{room.upper()} ACTIVITY", F_TITLE)
     text(d, (50, 82), "PUBLIC METADATA REPLAY · MESSAGE TEXT EXCLUDED", F_SUB, MUTED)
 
@@ -201,10 +217,10 @@ def base_frame(room: str, nodes: list[Node], s: dict) -> Image.Image:
     stat_vals = [
         (str(s["messages"]), "EVENTS"),
         (str(s["authors"]), "AUTHORS"),
-        (f"{s['signed_share']*100:.1f}%", "SIGNED"),
+        (f"{s['signed_share'] * 100:.1f}%", "SIGNED"),
         (f"{s['messages_per_minute']:.1f}/MIN", "OBSERVED RATE"),
     ]
-    for x0, (value, label) in zip(stat_x, stat_vals):
+    for x0, (value, label) in zip(stat_x, stat_vals, strict=True):
         text(d, (x0, 122), value, F_STAT)
         text(d, (x0, 159), label, F_SMALL, MUTED)
 
@@ -232,7 +248,13 @@ def point_on_edge(node: Node, progress: float) -> tuple[float, float]:
     return node.x + (cx - node.x) * eased, node.y + (cy - node.y) * eased
 
 
-def draw_pulses(im: Image.Image, events: list[Event], nodes_by_key: dict[str, Node], remap: dict[str, str], frame: int) -> None:
+def draw_pulses(
+    im: Image.Image,
+    events: list[Event],
+    nodes_by_key: dict[str, Node],
+    remap: dict[str, str],
+    frame: int,
+) -> None:
     d = ImageDraw.Draw(im)
     total = len(events)
     current = int(frame / FRAMES * total)
@@ -249,26 +271,44 @@ def draw_pulses(im: Image.Image, events: list[Event], nodes_by_key: dict[str, No
         px, py = point_on_edge(node, progress)
         radius = 4 if events[event_index].signed else 3
         glow = int(4 + 7 * local)
-        color = ACCENT if events[event_index].author == CANONICAL_DID else SIGNED if events[event_index].signed else ANON
-        d.ellipse((px - glow, py - glow, px + glow, py + glow), outline=tuple(int(c * 0.45) for c in color), width=1)
+        color = (
+            ACCENT
+            if events[event_index].author == CANONICAL_DID
+            else SIGNED
+            if events[event_index].signed
+            else ANON
+        )
+        d.ellipse(
+            (px - glow, py - glow, px + glow, py + glow),
+            outline=tuple(int(c * 0.45) for c in color),
+            width=1,
+        )
         d.ellipse((px - radius, py - radius, px + radius, py + radius), fill=color)
     if total:
         shown = min(total, current + 1)
         text(d, (WIDTH - 50, HEIGHT - 52), f"REPLAY {shown:03d}/{total:03d}", F_SMALL, MUTED, "ra")
 
 
-def render_svg(room: str, nodes: list[Node], events: list[Event], remap: dict[str, str], s: dict) -> str:
+def render_svg(
+    room: str, nodes: list[Node], events: list[Event], remap: dict[str, str], s: dict
+) -> str:
     cx, cy = WIDTH * 0.5, HEIGHT * 0.535
+
     def esc(v: object) -> str:
         return html.escape(str(v), quote=True)
+
     lines, circles, labels, pulses = [], [], [], []
     node_index = {n.key: i for i, n in enumerate(nodes)}
     for n in nodes:
-        lines.append(f'<line x1="{n.x:.1f}" y1="{n.y:.1f}" x2="{cx:.1f}" y2="{cy:.1f}" class="spoke"/>')
+        lines.append(
+            f'<line x1="{n.x:.1f}" y1="{n.y:.1f}" x2="{cx:.1f}" y2="{cy:.1f}" class="spoke"/>'
+        )
         cls = "canonical" if n.canonical else "signed" if n.signed else "anon"
         radius = max(4, min(12, 4 + int(math.log2(1 + n.count))))
         circles.append(f'<circle cx="{n.x:.1f}" cy="{n.y:.1f}" r="{radius}" class="node {cls}"/>')
-        labels.append(f'<text x="{n.x:.1f}" y="{n.y+radius+18:.1f}" class="node-label" text-anchor="middle">{esc(n.label)}</text>')
+        labels.append(
+            f'<text x="{n.x:.1f}" y="{n.y + radius + 18:.1f}" class="node-label" text-anchor="middle">{esc(n.label)}</text>'
+        )
     for i, e in enumerate(events):
         key = remap.get(e.author, e.author)
         n = nodes[node_index[key]]
@@ -278,25 +318,41 @@ def render_svg(room: str, nodes: list[Node], events: list[Event], remap: dict[st
             f'<circle r="{4 if e.signed else 3}" class="pulse {cls}" opacity="0">'
             f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.86;1" dur="0.9s" begin="{begin:.3f}s;loop.begin+{begin:.3f}s"/>'
             f'<animateMotion path="M {n.x:.1f} {n.y:.1f} L {cx:.1f} {cy:.1f}" dur="0.9s" begin="{begin:.3f}s;loop.begin+{begin:.3f}s" fill="freeze"/>'
-            f'</circle>'
+            f"</circle>"
         )
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-labelledby="title desc">
 <title id="title">Technocore /{esc(room)} activity replay</title><desc id="desc">Animation built from seq, timestamp and author metadata only. Message text is excluded.</desc>
 <style>svg{{background:#07090d;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}}.panel{{fill:#0e1219;stroke:#27303f}}.title{{fill:#eff3f8;font-size:28px;font-weight:700}}.sub,.label,.node-label,.foot{{fill:#8792a4}}.sub{{font-size:15px}}.stat{{fill:#eff3f8;font-size:30px;font-weight:700}}.label,.foot,.node-label{{font-size:11px}}.spoke{{stroke:#27303f;stroke-width:1}}.node.signed,.pulse.signed{{fill:#eef4fc}}.node.anon,.pulse.anon{{fill:#697486}}.node.canonical,.pulse.canonical{{fill:#aefcd4}}.hub{{fill:none;stroke:#eef4fc;stroke-width:3}}</style>
 <rect x="22" y="20" width="1236" height="680" rx="24" class="panel"/><text x="50" y="67" class="title">TECHNOCORE /{esc(room.upper())} ACTIVITY</text><text x="50" y="91" class="sub">PUBLIC METADATA REPLAY · MESSAGE TEXT EXCLUDED</text>
-<text x="52" y="145" class="stat">{s['messages']}</text><text x="52" y="169" class="label">EVENTS</text><text x="250" y="145" class="stat">{s['authors']}</text><text x="250" y="169" class="label">AUTHORS</text><text x="470" y="145" class="stat">{s['signed_share']*100:.1f}%</text><text x="470" y="169" class="label">SIGNED</text><text x="720" y="145" class="stat">{s['messages_per_minute']:.1f}/MIN</text><text x="720" y="169" class="label">OBSERVED RATE</text>
-{''.join(lines)}{''.join(circles)}{''.join(labels)}<circle cx="{cx}" cy="{cy}" r="40" class="hub"/><text x="{cx}" y="{cy+5}" text-anchor="middle" class="title" style="font-size:16px">/{esc(room)}</text>{''.join(pulses)}
-<text x="52" y="672" class="foot">SEQ {s['first_seq']} → {s['last_seq']} · {s['window_seconds']:.1f}s WINDOW · CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg</text><circle id="loop" cx="0" cy="0" r="0"><animate attributeName="r" values="0;0" dur="8s" begin="0s;loop.end"/></circle></svg>'''
+<text x="52" y="145" class="stat">{s["messages"]}</text><text x="52" y="169" class="label">EVENTS</text><text x="250" y="145" class="stat">{s["authors"]}</text><text x="250" y="169" class="label">AUTHORS</text><text x="470" y="145" class="stat">{s["signed_share"] * 100:.1f}%</text><text x="470" y="169" class="label">SIGNED</text><text x="720" y="145" class="stat">{s["messages_per_minute"]:.1f}/MIN</text><text x="720" y="169" class="label">OBSERVED RATE</text>
+{"".join(lines)}{"".join(circles)}{"".join(labels)}<circle cx="{cx}" cy="{cy}" r="40" class="hub"/><text x="{cx}" y="{cy + 5}" text-anchor="middle" class="title" style="font-size:16px">/{esc(room)}</text>{"".join(pulses)}
+<text x="52" y="672" class="foot">SEQ {s["first_seq"]} → {s["last_seq"]} · {s["window_seconds"]:.1f}s WINDOW · CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg</text><circle id="loop" cx="0" cy="0" r="0"><animate attributeName="r" values="0;0" dur="8s" begin="0s;loop.end"/></circle></svg>'''
 
 
-def save_gif(base: Image.Image, events: list[Event], nodes: list[Node], remap: dict[str, str], out: pathlib.Path) -> None:
+def save_gif(
+    base: Image.Image,
+    events: list[Event],
+    nodes: list[Node],
+    remap: dict[str, str],
+    out: pathlib.Path,
+) -> None:
     nodes_by_key = {n.key: n for n in nodes}
     frames: list[Image.Image] = []
     for frame in range(FRAMES):
         im = base.copy()
         draw_pulses(im, events, nodes_by_key, remap, frame)
-        frames.append(im.quantize(colors=128, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE))
-    frames[0].save(out, save_all=True, append_images=frames[1:], duration=round(1000 / FPS), loop=0, optimize=True, disposal=2)
+        frames.append(
+            im.quantize(colors=128, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+        )
+    frames[0].save(
+        out,
+        save_all=True,
+        append_images=frames[1:],
+        duration=round(1000 / FPS),
+        loop=0,
+        optimize=True,
+        disposal=2,
+    )
 
 
 def main() -> None:
@@ -315,7 +371,9 @@ def main() -> None:
     manifest_path = args.output_dir / "manifest.json"
 
     snapshot = safe_snapshot(room, events, args.source_url, sha256_bytes(raw_bytes))
-    snapshot_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    snapshot_path.write_text(
+        json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     svg_path.write_text(render_svg(room, nodes, events, remap, s), encoding="utf-8")
     base = base_frame(room, nodes, s)
     draw_pulses(base, events, {n.key: n for n in nodes}, remap, FRAMES - 1)
@@ -328,14 +386,23 @@ def main() -> None:
         outputs[p.name] = {"sha256": sha256_bytes(blob), "bytes": len(blob)}
     manifest = {
         "schema": "technocore-traffic-visualizer-manifest/v1",
-        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "generated_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "source": snapshot["source"],
-        "safety": {"message_text_included": False, "fields_used": ["seq", "ts", "from"], "network_write_performed": False},
-        "identity": {"canonical_did": CANONICAL_DID, "canonical_did_events_in_window": s["canonical_did_events"]},
+        "safety": {
+            "message_text_included": False,
+            "fields_used": ["seq", "ts", "from"],
+            "network_write_performed": False,
+        },
+        "identity": {
+            "canonical_did": CANONICAL_DID,
+            "canonical_did_events_in_window": s["canonical_did_events"],
+        },
         "stats": s,
         "outputs": outputs,
     }
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(json.dumps(manifest, ensure_ascii=False))
 
 
