@@ -5,7 +5,7 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-28T11:05:16+09:00",
+  "updated_at": "2026-08-28T14:50:03+09:00",
   "approval": {
     "approved": true,
     "user_text": "批准",
@@ -53,6 +53,21 @@
       "actor": "runesleo",
       "result": "PUBLIC_AND_READBACK_VERIFIED",
       "summary": "Submitted the finished Chinese guide to the official community-index discussion with the canonical DID and prior merged PR #259 as provenance."
+    },
+    {
+      "type": "official_pr_concurrency_review",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 420,
+      "review_id": 5048258132,
+      "review_node_id": "PRR_kwDOT265G88AAAABLOZOVA",
+      "review_state": "CHANGES_REQUESTED",
+      "submitted_at": "2026-08-28T05:49:08Z",
+      "actor": "runesleo",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "finding": "PR #420 places time.monotonic() before _buckets_lock. Two callers can sample time in A-then-B order but acquire the lock B-then-A, so the second mutation can use stale time, make tokens negative, issue a false Retry-After, and rewind the bucket last timestamp.",
+      "requested_fix": "Move the monotonic clock sample inside _buckets_lock and add a deterministic reverse-sample/reverse-acquisition regression asserting last never regresses and an available bucket is not refused.",
+      "same_did_provenance": true,
+      "cash_cost_usd": 0
     }
   ],
   "attempted_but_not_executed": [
@@ -75,8 +90,8 @@
       "The reviewed current API and upstream signer provide chat, notes and DID-signed writes; no faucet, inference or PoUI route was found."
     ],
     "inference_or_unpublished": [
-      "The Chinese guide and PR review are plausibly useful contributions under the broad FLOP useful-contribution rule.",
-      "No per-item score, snapshot credit, allocation increment or guaranteed FLOP amount is published for either action."
+      "The Chinese guide and PR reviews are plausibly useful contributions under the broad FLOP useful-contribution rule.",
+      "No per-item score, snapshot credit, allocation increment or guaranteed FLOP amount is published for any of these actions."
     ]
   },
   "capital": {
@@ -89,8 +104,25 @@
     "guide_seed_in_process_args_removed": true,
     "official_pr_comment_readback": true,
     "official_pr_review_readback": true,
+    "official_pr_420_review_readback": true,
+    "same_receipt_preserved": true,
+    "same_dedupe_preserved": true,
+    "same_did_preserved": true,
+    "new_did_created": false,
+    "funds_spent_usd": 0,
     "duplicate_card_created": false
   },
-  "next_action_or_trigger": "Do not create another awesome-technocore repository or spam additional comments. Wait for maintainer/index response. When a trusted local signer can safely access the existing DID key, publish one signed Technocore message referencing the guide and capture the resulting seq. Continue first-party monitoring for faucet, usable inference/PoUI, DID-linked score/allocation/snapshot/conversion rules, eligibility deadlines, material tokenomics/date changes, or new official useful-agent tasks.",
-  "status": "PUBLIC_USEFUL_CONTRIBUTION_EXECUTED__SAME_DID_PROVENANCE__NEW_SIGNATURE_PENDING_SAFE_SIGNER"
+  "next_action_or_trigger": "Monitor official PR #420 for an author update. If the clock sample moves inside _buckets_lock and a regression test covers reverse sample/acquisition order, re-review the exact new head once; do not add duplicate comments. Keep PR #306/index work in wait-for-maintainer state. When a trusted local signer can safely access the existing DID key, publish one signed Technocore message referencing the strongest accepted contribution and capture its seq. Continue first-party monitoring for faucet, usable inference/PoUI, DID-linked score/allocation/snapshot/conversion rules, eligibility deadlines, material tokenomics/date changes, or new official useful-agent tasks.",
+  "status": "PUBLIC_USEFUL_CONTRIBUTION_REVIEW_EXECUTED__PR420_CHANGES_REQUESTED__SAME_DID__ZERO_COST",
+  "latest_execution": {
+    "observed_at": "2026-08-28T14:50:03+09:00",
+    "type": "official_pr_concurrency_review",
+    "official_surface": "flop-labs/technocore-chat PR #420",
+    "review_id": 5048258132,
+    "state": "CHANGES_REQUESTED",
+    "material_flop_rule_change": false,
+    "actionable_contribution_executed": true,
+    "summary": "Submitted and verified a concrete concurrency review that catches a stale-clock ordering defect left outside the new rate-limit lock. This compounds the existing canonical DID contribution history without creating a new identity or spending money.",
+    "official_vs_inference": "The PR diff and review state are official GitHub facts. Whether this review earns any FLOP, score, snapshot credit or allocation remains unpublished and must not be inferred."
+  }
 }
