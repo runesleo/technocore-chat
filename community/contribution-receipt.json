@@ -5,15 +5,15 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-29T00:40:00+08:00",
+  "updated_at": "2026-08-29T02:08:00+09:00",
   "approval": {
     "approved": true,
-    "source": "existing T0671 execution envelope",
+    "source": "existing T0671 execution envelope plus current user instruction '继续做'",
     "interpreted_scope": [
-      "publish a useful zero-cost Technocore community asset",
-      "perform public GitHub contribution and review actions",
+      "build, verify, and publish zero-cost Technocore public GitHub contribution assets",
       "reuse the existing canonical DID provenance",
-      "sign with the existing DID only if the private key is safely available without disclosure"
+      "do not expose or reconstruct the DID private key",
+      "keep X publication separately confirmation-gated"
     ]
   },
   "identity_continuity": {
@@ -24,72 +24,186 @@
     "rule": "compound the same DID; never create a duplicate identity for FLOP or Technocore activity"
   },
   "executed": [
-    {"type":"official_pr_review","repository":"flop-labs/technocore-chat","pull_request":306,"review_id":5047280015,"actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
-    {"type":"public_community_guide","repository":"runesleo/technocore-chat","path":"community/technocore-quickstart.zh-CN.md","content_sha":"8e4c4cc7760aff64136aa3630b14ffa2fce2a5df","result":"PUBLIC_AND_READBACK_VERIFIED"},
-    {"type":"official_pr_followup_comment","repository":"flop-labs/technocore-chat","pull_request":306,"comment_id":5447488246,"actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
-    {"type":"official_pr_concurrency_review","repository":"flop-labs/technocore-chat","pull_request":420,"review_id":5048258132,"review_state":"CHANGES_REQUESTED","submitted_at":"2026-08-28T05:49:08Z","actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
-    {"type":"official_pr_re_review_approval","repository":"flop-labs/technocore-chat","pull_request":420,"head_sha":"42601f94812b46888f7455b2e10e46e28d8beddf","review_id":5051622678,"review_state":"APPROVED","submitted_at":"2026-08-28T13:40:40Z","actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
     {
-      "type":"official_visual_task_followup_asset",
-      "official_request_url":"https://x.com/flop_labs/status/2093236487492141290",
-      "official_request_timestamp":"2026-08-28T07:17:23.728Z",
-      "repository":"runesleo/technocore-chat",
-      "path":"community/technocore-traffic-visualizer",
-      "render_commit":"04e13ca1ac6d61cabc909d48e74ffd0d3d1219ab",
-      "readme_commit":"977d2b65c18b3ca533e4ab949fd4d979ff642948",
-      "result":"PUBLIC_AND_READBACK_VERIFIED",
-      "summary":"Published a read-only dependency-free Technocore room activity replay. It visualizes only seq/ts/from metadata, excludes untrusted message text, distinguishes signed did:key authors, needs no wallet or private key, and directly answers Flop Labs' request for a Technocore traffic visualization.",
-      "same_did_provenance":true,
-      "did_signature_added":false,
-      "x_post_published":false,
-      "cash_cost_usd":0
+      "type": "official_pr_review",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 306,
+      "review_id": 5047280015,
+      "actor": "runesleo",
+      "result": "PUBLIC_AND_READBACK_VERIFIED"
+    },
+    {
+      "type": "public_community_guide",
+      "repository": "runesleo/technocore-chat",
+      "path": "community/technocore-quickstart.zh-CN.md",
+      "content_sha": "8e4c4cc7760aff64136aa3630b14ffa2fce2a5df",
+      "result": "PUBLIC_AND_READBACK_VERIFIED"
+    },
+    {
+      "type": "official_pr_concurrency_review",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 420,
+      "review_id": 5048258132,
+      "review_state": "CHANGES_REQUESTED",
+      "result": "PUBLIC_AND_READBACK_VERIFIED"
+    },
+    {
+      "type": "official_pr_re_review_approval",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 420,
+      "head_sha": "42601f94812b46888f7455b2e10e46e28d8beddf",
+      "review_id": 5051622678,
+      "review_state": "APPROVED",
+      "result": "PUBLIC_AND_READBACK_VERIFIED"
+    },
+    {
+      "type": "official_visual_task_followup_asset",
+      "official_request_url": "https://x.com/flop_labs/status/2093236487492141290",
+      "repository": "runesleo/technocore-chat",
+      "path": "community/technocore-traffic-visualizer",
+      "render_commit": "04e13ca1ac6d61cabc909d48e74ffd0d3d1219ab",
+      "initial_readme_commit": "977d2b65c18b3ca533e4ab949fd4d979ff642948",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "cash_cost_usd": 0
+    },
+    {
+      "type": "live_media_exporter_and_refresh_workflow",
+      "repository": "runesleo/technocore-chat",
+      "exporter_commit": "1a674f32cdbd22f7f535885bca572c03ec1a465a",
+      "workflow_commit": "90e0f2a75072ec7b9a6ab8bf9cb950868888bffe",
+      "artifact_upload_commit": "3673e3a0320e0a8e3fbc5346a559855b5f92eb9f",
+      "provenance_wording_commit": "20fb58ddcbeb7eb23a19a31c9f17c85449ec0ff7",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "cash_cost_usd": 0
+    },
+    {
+      "type": "live_official_lobby_render",
+      "repository": "runesleo/technocore-chat",
+      "artifact_commit": "c1cbc59390c68968307faa6469142a257bde5c66",
+      "readme_preview_commit": "522cae3d204d7ab3b6d4393a17927d4ae9d0e122",
+      "workflow_run_id": 33193096172,
+      "workflow_job_id": 98923284202,
+      "workflow_conclusion": "success",
+      "actions_artifact_id": 9694582435,
+      "actions_artifact_name": "technocore-lobby-activity-33193096172-1",
+      "actions_artifact_digest": "sha256:88527aad6ecdc902f59abad010670ef57484b87988febedd4c7bb403bdcb1909",
+      "actions_artifact_expires_at": "2026-09-27T17:06:18Z",
+      "result": "PUBLIC_LIVE_MEDIA_AND_DOWNLOAD_BUNDLE_VERIFIED",
+      "same_did_provenance": true,
+      "did_signature_added": false,
+      "x_post_published": false,
+      "cash_cost_usd": 0
     }
   ],
+  "latest_execution": {
+    "type": "official_visual_task_live_media_closeout",
+    "official_request": "Technocore traffic/activity visualization",
+    "official_request_url": "https://x.com/flop_labs/status/2093236487492141290",
+    "source": {
+      "url": "https://technocore.chat/r/lobby?format=json&limit=200&wait=0",
+      "captured_at": "2026-08-28T17:06:09.111161Z",
+      "raw_response_sha256": "f2418130a3b35b7742ecb163d8f1c879a7da2fc5386463b015d9c87466d4b497",
+      "read_only": true,
+      "raw_response_committed": false
+    },
+    "window": {
+      "messages": 200,
+      "authors": 182,
+      "signed_messages": 200,
+      "signed_share": 1.0,
+      "window_seconds": 12.319516897201538,
+      "messages_per_minute": 974.06416989662,
+      "first_seq": 7325912,
+      "last_seq": 7326111,
+      "first_ts": "2026-08-28T17:05:54.573888Z",
+      "last_ts": "2026-08-28T17:06:06.893405Z",
+      "canonical_did_events_in_this_window": 0,
+      "identity_interpretation": "This is a global lobby activity window. The canonical contribution DID did not appear in this 12.3-second tail; it is contribution provenance, not a claim of activity in every snapshot."
+    },
+    "outputs": {
+      "lobby-latest.metadata.json": {
+        "sha256": "9fd75cc920c3e1dcbce1a178e20b1edf06e468c0e31bc3e5555fdb3a54d75b44",
+        "bytes": 35024
+      },
+      "lobby-activity.svg": {
+        "sha256": "6f09de32e58d24ad9fa986c541fb1aa8b79d419607dfc4f91aaa38bf158d489e",
+        "bytes": 64709
+      },
+      "lobby-activity.png": {
+        "sha256": "8e4ec505b3bf26dcb2c5c4e8d922399638aa4d68e211eaddf4c36878e8814c2f",
+        "bytes": 47060
+      },
+      "lobby-activity.gif": {
+        "sha256": "59d8a4f97b325f374176bb53b904e8451e7c9d341508fc2e813eca2e74b129a9",
+        "bytes": 2891884
+      },
+      "lobby-replay.html": {
+        "bytes": 32177
+      },
+      "manifest.json": {
+        "git_blob_sha": "19dd76ebc17151218e5e32f121dcc8d7fbd8bee0",
+        "bytes": 1608
+      }
+    },
+    "safety": {
+      "message_text_read": false,
+      "message_text_embedded": false,
+      "message_text_rendered": false,
+      "fields_used": [
+        "seq",
+        "ts",
+        "from"
+      ],
+      "ast_guard_passed": true,
+      "raw_response_not_committed": true,
+      "network_write_to_technocore": false,
+      "wallet_or_token_used": false,
+      "private_key_used": false
+    },
+    "result": "LIVE_HTML_SVG_PNG_GIF_METADATA_MANIFEST_AND_ACTIONS_BUNDLE_PUBLISHED_AND_VERIFIED"
+  },
   "official_vs_inference": {
     "official": [
-      "Flop Labs officially posted on 2026-08-28 that it would be super interesting to see a visualization like the referenced Hugging Face agent-activity visual for Technocore (tweet 2093236487492141290).",
-      "The standing Flop Labs useful-contribution rule says agents should create a unique DID and do something useful to spread Technocore and will be rewarded during the FLOP airdrop (tweet 2091830155270672521).",
-      "FLOP Teaser remains v0.1 draft updated 2026-08-26; Testnet remains Q4 2026 and Mainnet Q1 2027.",
-      "Agent genesis allocation remains up to 1.2bn FLOP; agents are described as claiming a test-token faucet and spending it on inference, with airdrop based largely on testnet inference spend and every 3 FLOP spent on inference unlocking 1 airdropped FLOP.",
-      "Live Technocore OpenAPI remains version 0.10.0 and exposes no faucet, inference, PoUI, allocation, or snapshot route."
+      "Flop Labs officially requested a Technocore activity visualization on 2026-08-28.",
+      "The standing Flop Labs useful-contribution rule states that a unique-DID agent doing something useful to spread Technocore will be rewarded during the FLOP airdrop.",
+      "The current live visualization source is the official Technocore /r/lobby JSON read surface."
     ],
     "inference_or_unpublished": [
-      "The new visualization request is a high-fit contribution under the already-published useful-contribution reward rule, but the visualization post itself does not promise a per-task payout, score, snapshot credit, allocation increment, or guaranteed FLOP amount.",
-      "No first-party source was found explicitly tying this visualization, PR review, or current DID message count to an allocation formula, score, snapshot, conversion, or mainnet entitlement."
+      "This visualization is a high-fit useful contribution, but no first-party per-task payout, score, snapshot credit, allocation multiplier, conversion ratio, or guaranteed FLOP amount has been published.",
+      "The observed 100% signed share and message rate are properties of one 12.3-second lobby tail, not an allocation formula or project-wide long-run statistic."
     ]
   },
   "capital": {
     "spent_usd": 0,
     "recommended_additional_spend_usd": 0,
-    "reason": "The visualization contribution is zero-cost and no first-party capital-to-allocation multiplier exists; faucet/inference is not live."
+    "reason": "The entire contribution path is zero-cost and no first-party capital-to-allocation multiplier exists; faucet/inference remains unavailable."
   },
   "execution_envelope": {
-    "github_asset_build_and_publish": "PERMITTED_AND_EXECUTED under existing approved public GitHub contribution scope",
-    "technocore_signed_message": "NOT_EXECUTED because the existing DID private signer is unavailable in this execution surface; no key was requested or exposed",
-    "x_publication": "NOT_EXECUTED; public X posting is outside the existing GitHub-specific execution envelope and remains confirmation-gated"
+    "github_asset_build_publish_and_workflow": "PERMITTED_AND_EXECUTED",
+    "technocore_signed_message": "NOT_EXECUTED because the existing DID signer/private key is unavailable in this execution surface; no key was requested, searched for, copied, reconstructed, or exposed",
+    "x_publication": "NOT_EXECUTED; separately confirmation-gated"
   },
   "verification": {
-    "visualizer_local_py_compile": true,
-    "visualizer_offline_fixture_render": true,
-    "visualizer_untrusted_message_text_excluded": true,
-    "visualizer_render_py_github_readback": true,
-    "visualizer_readme_github_readback": true,
+    "live_official_fetch": true,
+    "workflow_run_success": true,
+    "all_workflow_steps_success": true,
+    "actions_artifact_uploaded": true,
+    "actions_artifact_downloaded_and_unzipped": true,
+    "manifest_output_hashes_exact_match": true,
+    "png_visual_inspected": true,
+    "provenance_wording_corrected_and_readback": true,
+    "readme_preview_and_output_links_readback": true,
+    "message_text_exclusion_guard": true,
     "same_receipt_preserved": true,
     "same_dedupe_preserved": true,
     "same_did_preserved": true,
     "new_did_created": false,
-    "funds_spent_usd": 0,
-    "flop_teaser_version": "0.1",
-    "flop_teaser_updated": "2026-08-26",
-    "technocore_openapi_version": "0.10.0",
-    "technocore_faucet_route_present": false,
-    "technocore_inference_route_present": false,
-    "technocore_poui_route_present": false
+    "funds_spent_usd": 0
   },
-  "next_action_or_trigger": "The GitHub visualization asset is now public and read-back verified. Next highest-value step is to run it from an internet-capable environment against a fresh /r/lobby JSON tail and capture the rendered artifact; then, only when a trusted signer can safely access the existing DID key, publish one signed Technocore message referencing the visualizer and capture its seq. Do not create another DID. X posting remains confirmation-gated. Continue first-party monitoring for a live faucet, usable inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, eligibility deadlines, tokenomics/date changes, or another official useful-agent task.",
-  "status": "OFFICIAL_VISUAL_TASK_ACTIONED__PUBLIC_GITHUB_ASSET_VERIFIED__SAME_DID_PROVENANCE__ZERO_COST",
+  "next_action_or_trigger": "GitHub visual contribution is now a complete, repeatable live pipeline. Do not create another visualizer, DID, or duplicate comment. Wait for a first-party maintainer/FLOP Labs response or a materially new visual requirement. When a trusted local signer can safely use the existing DID key without exposing it to the model, publish one signed Technocore contribution receipt referencing the accepted strongest artifact and capture its seq. X reply/publication remains separately confirmation-gated. Continue first-party monitoring for live faucet, usable inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, eligibility deadlines, tokenomics/date changes, or another official useful-agent task.",
+  "status": "OFFICIAL_VISUAL_TASK_LIVE_PIPELINE_COMPLETE__PUBLIC_MEDIA_AND_ACTIONS_BUNDLE_VERIFIED__SAME_DID_PROVENANCE__ZERO_COST",
   "latest_monitoring": {
-    "checked_at": "2026-08-29T00:40:00+08:00",
+    "checked_at": "2026-08-29T02:08:00+09:00",
     "material_flop_rule_change": false,
     "technocore_faucet_live": false,
     "technocore_inference_or_poui_live": false,
@@ -100,6 +214,6 @@
     "new_explicit_per_task_reward_found": false,
     "new_official_useful_task_request_found": true,
     "task_request": "Technocore traffic/activity visualization",
-    "action_taken": "Built, locally verified, publicly committed, and read-back verified the Technocore activity replay under the existing receipt."
+    "action_taken": "Completed the live read-only fetch, safe HTML/SVG/PNG/GIF export, metadata-only snapshot, hash manifest, downloadable Actions bundle, public README preview, and exact readback verification under the existing receipt."
   }
 }
