@@ -51,7 +51,7 @@ jobs:
       - name: Install exporter and lint dependencies
         run: python -m pip install --disable-pip-version-check 'Pillow==12.0.0' 'ruff==0.16.2'
 
-      - name: Normalize visualizer source contracts
+      - name: Normalize and validate visualizer source contracts
         shell: bash
         run: |
           set -euo pipefail
@@ -89,6 +89,9 @@ jobs:
           assert 'zip(stat_x, stat_vals, strict=True)' in media.read_text(encoding='utf-8')
           assert 'CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg' in media.read_text(encoding='utf-8')
           PY
+          ruff format \
+            community/technocore-traffic-visualizer/render.py \
+            community/technocore-traffic-visualizer/render_media.py
           python -m py_compile \
             community/technocore-traffic-visualizer/render.py \
             community/technocore-traffic-visualizer/render_media.py
