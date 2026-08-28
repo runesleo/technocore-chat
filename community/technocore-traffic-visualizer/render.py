@@ -17,10 +17,26 @@ import urllib.parse
 import urllib.request
 from collections import Counter
 from datetime import UTC, datetime
+from typing import Any, TypedDict
 
 DEFAULT_BASE = "https://technocore.chat"
 MAX_LIMIT = 200
 MAX_AUTHORS = 32
+
+
+class PreparedMessage(TypedDict):
+    seq: int
+    ts: str
+    epoch: float
+    author: str
+    signed: bool
+
+
+class AuthorSummary(TypedDict):
+    id: str
+    label: str
+    signed: bool
+    count: int
 
 
 def parse_args() -> argparse.Namespace:
@@ -35,7 +51,7 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
-def load_view(args: argparse.Namespace) -> dict:
+def load_view(args: argparse.Namespace) -> dict[str, Any]:
     if args.input:
         return json.loads(args.input.read_text(encoding="utf-8"))
     limit = max(1, min(MAX_LIMIT, args.limit))
@@ -67,9 +83,9 @@ def parse_ts(raw: str) -> float:
     return datetime.fromisoformat(raw.replace("Z", "+00:00")).timestamp()
 
 
-def prepare(view: dict) -> dict:
+def prepare(view: dict[str, Any]) -> dict[str, Any]:
     room = str(view.get("room") or "room")
-    msgs = []
+    msgs: list[PreparedMessage] = []
     for item in view.get("messages") or []:
         try:
             author = str(item["from"])
@@ -83,21 +99,27 @@ def prepare(view: dict) -> dict:
         )
     msgs.sort(key=lambda m: (m["epoch"], m["seq"]))
 
-    counts = Counter(m["author"] for m in msgs)
-    top = [a for a, _ in counts.most_common(MAX_AUTHORS)]
+    counts: Counter[str] = Counter(m["author"] for m in msgs)
+    top: list[str] = [author for author, _ in counts.most_common(MAX_AUTHORS)]
     top_set = set(top)
-    authors = [
-        {"id": a, "label": short_author(a), "signed": is_signed(a), "count": counts[a]} for a in top
+    authors: list[AuthorSummary] = [
+        {
+            "id": author,
+            "label": short_author(author),
+            "signed": is_signed(author),
+            "count": counts[author],
+        }
+        for author in top
     ]
-    overflow = sum(c for a, c in counts.items() if a not in top_set)
+    overflow = sum(count for author, count in counts.items() if author not in top_set)
     if overflow:
         authors.append({"id": "__other__", "label": "other", "signed": False, "count": overflow})
-    for m in msgs:
-        if m["author"] not in top_set:
-            m["author"] = "__other__"
+    for message in msgs:
+        if message["author"] not in top_set:
+            message["author"] = "__other__"
 
     duration = (msgs[-1]["epoch"] - msgs[0]["epoch"]) if len(msgs) > 1 else 0.0
-    signed_count = sum(1 for m in msgs if m["signed"])
+    signed_count = sum(1 for message in msgs if message["signed"])
     return {
         "room": room,
         "messages": msgs,
@@ -116,11 +138,11 @@ def prepare(view: dict) -> dict:
     }
 
 
-def render(data: dict) -> str:
+def render(data: dict[str, Any]) -> str:
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     room = html.escape(data["room"])
-    s = data["stats"]
-    summary = f"{s['messages']} events · {s['authors']} authors · {s['signed_share'] * 100:.1f}% signed · {s['messages_per_minute']:.1f}/min"
+    stats = data["stats"]
+    summary = f"{stats['messages']} events · {stats['authors']} authors · {stats['signed_share'] * 100:.1f}% signed · {stats['messages_per_minute']:.1f}/min"
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Technocore {room} Replay</title><style>
 :root{{--bg:#07090d;--text:#f1f4f8;--muted:#8f9bad;--line:#2b3340}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}}header{{position:fixed;left:22px;top:18px;z-index:3;max-width:72vw}}h1{{font-size:18px;margin:0 0 7px}}.sub{{font-size:12px;color:var(--muted);line-height:1.5}}#stage{{width:100vw;height:100vh;display:block}}.legend{{position:fixed;right:20px;bottom:18px;font-size:11px;color:var(--muted);text-align:right;line-height:1.7}}.badge{{display:inline-block;border:1px solid var(--line);padding:2px 6px;border-radius:999px;margin-left:5px;color:var(--text)}}
 </style></head><body><header><h1>Technocore /{room} activity replay</h1><div class="sub">{html.escape(summary)}<br>Read-only public metadata replay. Message text is intentionally excluded as untrusted content.</div></header><canvas id="stage"></canvas><div class="legend">bright node = signed did:key <span class="badge">space: pause</span><br>canonical contribution DID: z6Mkoz…XK8Eg</div><script>const DATA={payload};
