@@ -5,10 +5,10 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-28T21:40:40+08:00",
+  "updated_at": "2026-08-29T00:40:00+08:00",
   "approval": {
     "approved": true,
-    "user_text": "批准",
+    "source": "existing T0671 execution envelope",
     "interpreted_scope": [
       "publish a useful zero-cost Technocore community asset",
       "perform public GitHub contribution and review actions",
@@ -24,142 +24,82 @@
     "rule": "compound the same DID; never create a duplicate identity for FLOP or Technocore activity"
   },
   "executed": [
+    {"type":"official_pr_review","repository":"flop-labs/technocore-chat","pull_request":306,"review_id":5047280015,"actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
+    {"type":"public_community_guide","repository":"runesleo/technocore-chat","path":"community/technocore-quickstart.zh-CN.md","content_sha":"8e4c4cc7760aff64136aa3630b14ffa2fce2a5df","result":"PUBLIC_AND_READBACK_VERIFIED"},
+    {"type":"official_pr_followup_comment","repository":"flop-labs/technocore-chat","pull_request":306,"comment_id":5447488246,"actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
+    {"type":"official_pr_concurrency_review","repository":"flop-labs/technocore-chat","pull_request":420,"review_id":5048258132,"review_state":"CHANGES_REQUESTED","submitted_at":"2026-08-28T05:49:08Z","actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
+    {"type":"official_pr_re_review_approval","repository":"flop-labs/technocore-chat","pull_request":420,"head_sha":"42601f94812b46888f7455b2e10e46e28d8beddf","review_id":5051622678,"review_state":"APPROVED","submitted_at":"2026-08-28T13:40:40Z","actor":"runesleo","result":"PUBLIC_AND_READBACK_VERIFIED"},
     {
-      "type": "official_pr_review",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 306,
-      "review_id": 5047280015,
-      "actor": "runesleo",
-      "result": "PUBLIC_AND_READBACK_VERIFIED",
-      "summary": "Reviewed competing awesome-technocore indexes, recommended the more neutral safety-first candidate, and requested official/community separation plus no endorsement or airdrop-guarantee language."
-    },
-    {
-      "type": "public_community_guide",
-      "repository": "runesleo/technocore-chat",
-      "path": "community/technocore-quickstart.zh-CN.md",
-      "url": "https://github.com/runesleo/technocore-chat/blob/main/community/technocore-quickstart.zh-CN.md",
-      "initial_commit": "4b6603b3daebf4837cae20218dcc1df52c4e2358",
-      "safety_fix_commit": "62953d38b927831294dba64f7cc871bcdf959f2f",
-      "content_sha": "8e4c4cc7760aff64136aa3630b14ffa2fce2a5df",
-      "result": "PUBLIC_AND_READBACK_VERIFIED",
-      "summary": "Published an independent Simplified Chinese safety quickstart pinned to upstream commit 9c7df0e3616cf28d17e7c8ebeb0c05de6adf117c. It separates official rules from community claims, documents the current absence of faucet/inference/PoUI routes, rejects fake /kv/faucet queue semantics and allocation guarantees, preserves one-DID continuity, and keeps SIGN_SEED out of process arguments."
-    },
-    {
-      "type": "official_pr_followup_comment",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 306,
-      "comment_id": 5447488246,
-      "url": "https://github.com/flop-labs/technocore-chat/pull/306#issuecomment-5447488246",
-      "actor": "runesleo",
-      "result": "PUBLIC_AND_READBACK_VERIFIED",
-      "summary": "Submitted the finished Chinese guide to the official community-index discussion with the canonical DID and prior merged PR #259 as provenance."
-    },
-    {
-      "type": "official_pr_concurrency_review",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 420,
-      "review_id": 5048258132,
-      "review_node_id": "PRR_kwDOT265G88AAAABLOZOVA",
-      "review_state": "CHANGES_REQUESTED",
-      "submitted_at": "2026-08-28T05:49:08Z",
-      "actor": "runesleo",
-      "result": "PUBLIC_AND_READBACK_VERIFIED",
-      "finding": "PR #420 sampled time.monotonic() before _buckets_lock. Reverse sample/acquisition order could compute a negative refill, falsely refuse an available bucket, emit a false Retry-After, and rewind the bucket last timestamp.",
-      "requested_fix": "Move time.monotonic() inside _buckets_lock and add a deterministic reverse sample/acquisition regression asserting last never regresses and an available bucket is not refused.",
-      "same_did_provenance": true,
-      "cash_cost_usd": 0
-    },
-    {
-      "type": "official_pr_re_review_approval",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 420,
-      "head_sha": "42601f94812b46888f7455b2e10e46e28d8beddf",
-      "review_id": 5051622678,
-      "review_node_id": "PRR_kwDOT265G88AAAABLRmlFg",
-      "review_state": "APPROVED",
-      "submitted_at": "2026-08-28T13:40:40Z",
-      "actor": "runesleo",
-      "result": "PUBLIC_AND_READBACK_VERIFIED",
-      "verification": "Requested fix is present: time.monotonic() now samples inside _buckets_lock. The new test_take_samples_the_clock_inside_the_lock forces the reverse acquisition ordering and asserts no false refusal, non-negative tokens, and monotone last.",
-      "same_did_provenance": true,
-      "cash_cost_usd": 0
-    }
-  ],
-  "attempted_but_not_executed": [
-    {
-      "type": "community_index_issue",
-      "repository": "zunmax/awesome-technocore",
-      "result": "NOT_EXECUTED__GITHUB_INTEGRATION_403",
-      "reason": "Resource not accessible by the connected GitHub integration. No issue was created and no success is claimed."
-    },
-    {
-      "type": "new_did_signed_message",
-      "result": "NOT_EXECUTED__PRIVATE_KEY_UNAVAILABLE_IN_THIS_EXECUTION_SURFACE",
-      "reason": "The existing private seed was not available to the GitHub/ChatGPT execution surface. The key was not requested, searched for, copied, reconstructed or exposed. Existing signed lobby seq 860623 remains the provenance anchor."
+      "type":"official_visual_task_followup_asset",
+      "official_request_url":"https://x.com/flop_labs/status/2093236487492141290",
+      "official_request_timestamp":"2026-08-28T07:17:23.728Z",
+      "repository":"runesleo/technocore-chat",
+      "path":"community/technocore-traffic-visualizer",
+      "render_commit":"04e13ca1ac6d61cabc909d48e74ffd0d3d1219ab",
+      "readme_commit":"977d2b65c18b3ca533e4ab949fd4d979ff642948",
+      "result":"PUBLIC_AND_READBACK_VERIFIED",
+      "summary":"Published a read-only dependency-free Technocore room activity replay. It visualizes only seq/ts/from metadata, excludes untrusted message text, distinguishes signed did:key authors, needs no wallet or private key, and directly answers Flop Labs' request for a Technocore traffic visualization.",
+      "same_did_provenance":true,
+      "did_signature_added":false,
+      "x_post_published":false,
+      "cash_cost_usd":0
     }
   ],
   "official_vs_inference": {
     "official": [
-      "FLOP Teaser remains v0.1 draft, updated 2026-08-26; Testnet remains Q4 2026, Mainnet Q1 2027.",
-      "Agent genesis allocation remains up to 1.2bn FLOP; agents are described as claiming test-token faucet and spending it on inference, with airdrop based largely on testnet inference spend and every 3 FLOP spent on inference unlocking 1 airdropped FLOP.",
-      "Live Technocore OpenAPI remains version 0.10.0 and exposes no faucet, inference, or PoUI route.",
-      "Official technocore-chat PR #420 head advanced to 42601f94812b46888f7455b2e10e46e28d8beddf and explicitly incorporated the requested clock-inside-lock fix plus regression test; the follow-up review is APPROVED."
+      "Flop Labs officially posted on 2026-08-28 that it would be super interesting to see a visualization like the referenced Hugging Face agent-activity visual for Technocore (tweet 2093236487492141290).",
+      "The standing Flop Labs useful-contribution rule says agents should create a unique DID and do something useful to spread Technocore and will be rewarded during the FLOP airdrop (tweet 2091830155270672521).",
+      "FLOP Teaser remains v0.1 draft updated 2026-08-26; Testnet remains Q4 2026 and Mainnet Q1 2027.",
+      "Agent genesis allocation remains up to 1.2bn FLOP; agents are described as claiming a test-token faucet and spending it on inference, with airdrop based largely on testnet inference spend and every 3 FLOP spent on inference unlocking 1 airdropped FLOP.",
+      "Live Technocore OpenAPI remains version 0.10.0 and exposes no faucet, inference, PoUI, allocation, or snapshot route."
     ],
     "inference_or_unpublished": [
-      "The PR #420 review/approval is a useful upstream contribution that compounds the same DID provenance, but FLOP Labs has not published any per-review score, snapshot credit, allocation increment, or guaranteed FLOP amount.",
-      "No new first-party rule was found tying this GitHub review specifically to FLOP allocation, score, snapshot, conversion, or mainnet eligibility."
+      "The new visualization request is a high-fit contribution under the already-published useful-contribution reward rule, but the visualization post itself does not promise a per-task payout, score, snapshot credit, allocation increment, or guaranteed FLOP amount.",
+      "No first-party source was found explicitly tying this visualization, PR review, or current DID message count to an allocation formula, score, snapshot, conversion, or mainnet entitlement."
     ]
   },
   "capital": {
     "spent_usd": 0,
     "recommended_additional_spend_usd": 0,
-    "reason": "No paid prerequisite or first-party capital-to-allocation multiplier exists for this contribution path; faucet/inference is not live."
+    "reason": "The visualization contribution is zero-cost and no first-party capital-to-allocation multiplier exists; faucet/inference is not live."
+  },
+  "execution_envelope": {
+    "github_asset_build_and_publish": "PERMITTED_AND_EXECUTED under existing approved public GitHub contribution scope",
+    "technocore_signed_message": "NOT_EXECUTED because the existing DID private signer is unavailable in this execution surface; no key was requested or exposed",
+    "x_publication": "NOT_EXECUTED; public X posting is outside the existing GitHub-specific execution envelope and remains confirmation-gated"
   },
   "verification": {
-    "guide_readback": true,
-    "guide_seed_in_process_args_removed": true,
-    "official_pr_comment_readback": true,
-    "official_pr_review_readback": true,
-    "duplicate_card_created": false,
-    "official_pr_420_change_request_readback": true,
-    "official_pr_420_approval_readback": true,
-    "official_pr_420_current_head": "42601f94812b46888f7455b2e10e46e28d8beddf",
+    "visualizer_local_py_compile": true,
+    "visualizer_offline_fixture_render": true,
+    "visualizer_untrusted_message_text_excluded": true,
+    "visualizer_render_py_github_readback": true,
+    "visualizer_readme_github_readback": true,
+    "same_receipt_preserved": true,
+    "same_dedupe_preserved": true,
+    "same_did_preserved": true,
+    "new_did_created": false,
+    "funds_spent_usd": 0,
     "flop_teaser_version": "0.1",
     "flop_teaser_updated": "2026-08-26",
     "technocore_openapi_version": "0.10.0",
     "technocore_faucet_route_present": false,
     "technocore_inference_route_present": false,
-    "technocore_poui_route_present": false,
-    "same_receipt_preserved": true,
-    "same_dedupe_preserved": true,
-    "same_did_preserved": true,
-    "new_did_created": false,
-    "funds_spent_usd": 0
+    "technocore_poui_route_present": false
   },
-  "next_action_or_trigger": "PR #420 requested fix is now approved on head 42601f94812b46888f7455b2e10e46e28d8beddf. Do not add another comment unless the head materially changes or a maintainer asks a concrete follow-up; otherwise wait for merge/maintainer action. Continue first-party monitoring for a live faucet, usable inference/PoUI, DID-linked allocation/score/snapshot/conversion rules, eligibility deadlines, tokenomics/date changes, or a new official useful-agent task. Reuse the same DID; do not create another identity.",
-  "status": "PUBLIC_USEFUL_CONTRIBUTION_REVIEW_APPROVED__PR420_HEAD_42601F__SAME_DID__ZERO_COST",
-  "latest_execution": {
-    "observed_at": "2026-08-28T21:40:40+08:00",
-    "type": "official_pr_re_review_approval",
-    "official_surface": "flop-labs/technocore-chat PR #420",
-    "head_sha": "42601f94812b46888f7455b2e10e46e28d8beddf",
-    "review_id": 5051622678,
-    "state": "APPROVED",
-    "material_flop_rule_change": false,
-    "actionable_contribution_executed": true,
-    "summary": "Author updated PR #420 to implement the exact clock-inside-lock fix requested in the prior review and added a targeted regression. Re-review verified the new head and APPROVED it, compounding the same canonical DID contribution history at zero cost.",
-    "official_vs_inference": "The PR head, code diff, test and review state are first-party GitHub facts. Whether the review earns FLOP, score, snapshot credit or allocation remains unpublished and is not inferred."
-  },
+  "next_action_or_trigger": "The GitHub visualization asset is now public and read-back verified. Next highest-value step is to run it from an internet-capable environment against a fresh /r/lobby JSON tail and capture the rendered artifact; then, only when a trusted signer can safely access the existing DID key, publish one signed Technocore message referencing the visualizer and capture its seq. Do not create another DID. X posting remains confirmation-gated. Continue first-party monitoring for a live faucet, usable inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, eligibility deadlines, tokenomics/date changes, or another official useful-agent task.",
+  "status": "OFFICIAL_VISUAL_TASK_ACTIONED__PUBLIC_GITHUB_ASSET_VERIFIED__SAME_DID_PROVENANCE__ZERO_COST",
   "latest_monitoring": {
-    "checked_at": "2026-08-28T21:40:40+08:00",
-    "flop_teaser_material_change": false,
+    "checked_at": "2026-08-29T00:40:00+08:00",
+    "material_flop_rule_change": false,
     "technocore_faucet_live": false,
     "technocore_inference_or_poui_live": false,
     "did_explicitly_tied_to_allocation_score_snapshot_conversion_mainnet": false,
     "new_snapshot_or_eligibility_deadline": false,
     "new_tokenomics_or_allocation_change": false,
     "testnet_mainnet_date_change": false,
-    "new_explicit_reward_task_found": false,
-    "actionable_existing_contribution_followup": "PR #420 author update was actionable and was re-reviewed/approved."
+    "new_explicit_per_task_reward_found": false,
+    "new_official_useful_task_request_found": true,
+    "task_request": "Technocore traffic/activity visualization",
+    "action_taken": "Built, locally verified, publicly committed, and read-back verified the Technocore activity replay under the existing receipt."
   }
 }
