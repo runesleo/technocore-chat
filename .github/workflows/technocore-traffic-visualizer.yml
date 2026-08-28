@@ -95,6 +95,21 @@ jobs:
           test -s community/technocore-traffic-visualizer/artifacts/lobby-activity.png
           test -s community/technocore-traffic-visualizer/artifacts/lobby-activity.gif
 
+      - name: Upload rendered bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: technocore-lobby-activity-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            community/technocore-traffic-visualizer/artifacts/lobby-replay.html
+            community/technocore-traffic-visualizer/artifacts/lobby-activity.svg
+            community/technocore-traffic-visualizer/artifacts/lobby-activity.png
+            community/technocore-traffic-visualizer/artifacts/lobby-activity.gif
+            community/technocore-traffic-visualizer/artifacts/lobby-latest.metadata.json
+            community/technocore-traffic-visualizer/artifacts/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
+
       - name: Publish refreshed artifacts
         shell: bash
         run: |
