@@ -5,178 +5,99 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-29T02:27:00+09:00",
+  "updated_at": "2026-08-29T02:43:00+08:00",
+  "status": "NEW_OFFICIAL_REWARD_TASK__TECHNOCORE_LOGO_COMPETITION__DEADLINE_2026_08_31__ZERO_COST_ENTRY__SAME_DID_PROVENANCE",
   "identity_continuity": {
     "canonical_did": "did:key:z6Mkoz9SvCQTSARsQ61jidRQpfhF3hHRqXY1k4bMxuXXK8Eg",
     "verified_signed_lobby_seq": 860623,
     "new_did_created": false,
     "private_key_requested_or_exposed": false,
-    "canonical_did_events_in_latest_visual_window": 0,
-    "interpretation": "The latest render is a global lobby activity tail. The DID is contribution provenance and is not claimed to have appeared in every captured window."
+    "rule": "Compound the same existing Technocore identity and public provenance; do not create another DID for the competition."
   },
-  "prior_verified_contributions": [
-    {
-      "type": "merged_upstream_contribution",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 259
+  "material_change": {
+    "type": "official_reward_task",
+    "task": "Technocore logo competition",
+    "announcement_channel": "Arthur Hayes @CryptoHayes on X; reposted by @flop_labs",
+    "announcement_status_url": "UNKNOWN_NOT_RESOLVED_BY_CURRENT_X_FETCH_SURFACE",
+    "brief": "Create a Technocore.chat logo embodying agent communication, commerce, and memory while staying within the Flop Network brand guidelines.",
+    "reward": {
+      "winner_choice": [
+        "5000 USDT",
+        "50000 FLOP once mainnet launches"
+      ],
+      "flop_vs_usdt_break_even_usd_per_flop": 0.1,
+      "selection": "winner chosen by @flop_labs"
     },
-    {
-      "type": "official_index_review_and_community_guide",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 306,
-      "review_id": 5047280015,
-      "followup_comment_id": 5447488246,
-      "guide": "community/technocore-quickstart.zh-CN.md"
+    "deadline": {
+      "corrected_date": "2026-08-31",
+      "correction_text": "Monday 31 August 2026 is the deadline",
+      "note": "The original announcement contained an inconsistent Monday 27 August date; the later first-party correction supersedes it."
     },
-    {
-      "type": "official_concurrency_review_and_approval",
-      "repository": "flop-labs/technocore-chat",
-      "pull_request": 420,
-      "changes_requested_review_id": 5048258132,
-      "approved_review_id": 5051622678,
-      "approved_head": "42601f94812b46888f7455b2e10e46e28d8beddf"
-    }
-  ],
-  "official_visual_task": {
-    "official_request_url": "https://x.com/flop_labs/status/2093236487492141290",
-    "request": "Technocore traffic/activity visualization",
-    "repository": "runesleo/technocore-chat",
-    "path": "community/technocore-traffic-visualizer",
-    "latest_data_commit": "74d2674303354e834695a68e75a73480e3cfc7c5",
-    "typed_renderer_commit": "3b12df6bd654531f677c2de60b817910eaf636dd",
-    "optional_pillow_typing_commit": "4ca82f57b43be96c9fb757fa850848213f8e0036",
-    "readme_preview_commit": "522cae3d204d7ab3b6d4393a17927d4ae9d0e122",
-    "workflow_definition_commit": "28a8eefa51e840eb9fc5d5928c55fb5f9c4b9b86",
-    "result": "LIVE_READ_ONLY_VISUAL_PIPELINE_PUBLISHED_AND_VERIFIED"
+    "official_brand_guidelines": "https://flop.finance/brand/",
+    "submission_mechanism": "UNKNOWN_NOT_EXPLICIT_IN_THE_ANNOUNCEMENT_CAPTURED_THIS_RUN",
+    "cash_cost_required": 0,
+    "actionable_now": true
   },
-  "latest_live_run": {
-    "workflow_run_id": 33193956338,
-    "workflow_job_id": 98926219472,
-    "conclusion": "success",
-    "all_steps_success": true,
-    "source": {
-      "url": "https://technocore.chat/r/lobby?format=json&limit=200&wait=0",
-      "captured_at": "2026-08-28T17:17:13.859552Z",
-      "raw_response_sha256": "927a062246b093da3eba10162242184732117c05783588566001624a056631f4",
-      "read_only": true,
-      "raw_response_committed": false
-    },
-    "window": {
-      "messages": 200,
-      "authors": 187,
-      "signed_messages": 200,
-      "signed_share": 1.0,
-      "window_seconds": 14.886528968811035,
-      "messages_per_minute": 806.0979174622479,
-      "first_seq": 7337513,
-      "last_seq": 7337712,
-      "first_ts": "2026-08-28T17:16:53.540955Z",
-      "last_ts": "2026-08-28T17:17:08.427484Z",
-      "canonical_did_events": 0
-    },
-    "actions_artifact": {
-      "id": 9694937314,
-      "name": "technocore-lobby-activity-33193956338-1",
-      "digest": "sha256:59a0437aadcf925d2f3a6ea8a6dd0c7e2d44b16e1ad8a585540c21edc951f98c",
-      "expires_at": "2026-09-27T17:17:22Z",
-      "downloaded_and_unzipped": true
-    }
+  "official_current_baseline": {
+    "flop_teaser_version": "0.1 draft",
+    "flop_teaser_updated": "2026-08-26",
+    "testnet": "Q4 2026",
+    "mainnet": "Q1 2027",
+    "agent_genesis_airdrop_cap_flop": 1200000000,
+    "agent_airdrop_rule": "Agents claim a test-token faucet and spend it on inference; airdrop is based largely on testnet inference spend plus various prizes; every 3 FLOP spent on inference unlocks 1 airdropped FLOP.",
+    "technocore_protocol_relationship": "Satellite service; not part of the FLOP protocol."
   },
-  "outputs": {
-    "lobby-latest.metadata.json": {
-      "sha256": "d26610349b4c414a6ddf720bacd6dc58c7760bb30fd2f9b9b48b5b873e8bae99",
-      "bytes": 35024
-    },
-    "lobby-activity.svg": {
-      "sha256": "60a950d0a8cffac2a93418e72197f3f629b83de9488937942af2f5a610a83e6c",
-      "bytes": 64709
-    },
-    "lobby-activity.png": {
-      "sha256": "e75f1662acceee648b803a6aec1e2c5595ddfd90b7e2460affe6cd15c56d4270",
-      "bytes": 46317
-    },
-    "lobby-activity.gif": {
-      "sha256": "806a563fcd6e6fd573e598bf1737b9097c1f9648e70212c5f3176ecc3476c0a6",
-      "bytes": 2893093
-    },
-    "lobby-replay.html": {
-      "bytes": 31939
-    }
-  },
-  "repository_ci": {
-    "run_id": 33194460558,
-    "head_sha": "4ca82f57b43be96c9fb757fa850848213f8e0036",
-    "conclusion": "success",
-    "lint_tests_image_job": {
-      "job_id": 98927925254,
-      "conclusion": "success",
-      "steps": {
-        "uv_sync_frozen": "success",
-        "lint": "success",
-        "types": "success",
-        "tests_and_branch_coverage": "success",
-        "core_size": "success",
-        "example_end_to_end": "success",
-        "mcp_build_and_verify": "success",
-        "docker_image_build": "success",
-        "docker_image_smoke": "success"
-      }
-    },
-    "openapi_contract_job": {
-      "job_id": 98927925423,
-      "conclusion": "success"
-    }
-  },
-  "safety": {
-    "message_text_read": false,
-    "message_text_embedded": false,
-    "message_text_rendered": false,
-    "fields_used": [
-      "seq",
-      "ts",
-      "from"
-    ],
-    "ast_message_text_guard_passed": true,
-    "raw_response_absent_from_bundle": true,
-    "output_hashes_exact_match": true,
-    "png_visually_inspected": true,
-    "network_write_to_technocore": false,
-    "wallet_or_token_used": false,
-    "private_key_used": false
-  },
-  "source_quality": {
-    "official": [
-      "FLOP Labs requested a Technocore activity visualization.",
-      "The standing FLOP Labs useful-contribution rule says a unique-DID agent doing something useful to spread Technocore will be rewarded during the FLOP airdrop.",
-      "The visualizer reads the current official Technocore lobby JSON surface."
-    ],
-    "unpublished_or_inference": [
-      "No first-party source publishes a per-visualization payout, score, snapshot credit, allocation multiplier, conversion ratio, or guaranteed FLOP amount.",
-      "The 100% signed share and observed rate describe one 14.9-second tail only; they are not an allocation formula or long-run service statistic."
+  "brand_constraints_verified": {
+    "base": "#0A1128",
+    "ice_white": "#F5F7FA",
+    "accent": "#00B4D8",
+    "flop_blue": "#0466C8",
+    "electric_green_product_only": "#32D74B",
+    "rules": [
+      "Word mark uses Base on light grounds or Ice White on dark grounds only.",
+      "Chip uses Accent; Blue only as print alternate; Electric Green only in product surfaces; Base/Ice White for one-colour work.",
+      "Never use two accents in one lockup.",
+      "No tint, screening, or gradients."
     ]
+  },
+  "official_vs_speculation": {
+    "official": [
+      "A Technocore logo competition has been announced by Flop Labs CEO Arthur Hayes and reposted by Flop Labs.",
+      "The winner may choose 5000 USDT or 50000 FLOP once mainnet launches.",
+      "The corrected deadline is Monday 31 August 2026.",
+      "The design must follow the Flop Network brand guidelines."
+    ],
+    "not_published_or_not_inferred": [
+      "No scoring rubric or probability of winning is published.",
+      "No first-party source states that non-winning logo submissions receive FLOP, allocation credit, snapshot credit, or DID score.",
+      "No per-DID allocation multiplier for this competition is published.",
+      "The announcement capture does not specify an explicit submission mechanism, so a reply/tagging workflow must not be invented."
+    ]
+  },
+  "execution_envelope": {
+    "research_brand_rules_and_prepare_private_logo_brief": "PERMITTED_AUTOMATIC_ZERO_COST_REVERSIBLE",
+    "prepare_local_design_candidates": "PERMITTED_AUTOMATIC_ZERO_COST_REVERSIBLE",
+    "public_github_provenance_after_candidate_is_selected": "PERMITTED_UNDER_EXISTING_PUBLIC_GITHUB_CONTRIBUTION_SCOPE",
+    "public_x_submission_or_reply": "CONFIRMATION_GATED",
+    "technocore_signed_message": "ONLY_IF_THE_EXISTING_SIGNER_IS_AVAILABLE_WITHOUT_KEY_DISCLOSURE",
+    "new_did": "FORBIDDEN_BY_IDENTITY_CONTINUITY_RULE"
   },
   "capital": {
     "spent_usd": 0,
     "recommended_additional_spend_usd": 0,
-    "reason": "No paid prerequisite or first-party capital-to-allocation multiplier exists; faucet/inference remains unavailable."
+    "reason": "Entry is free and no evidence shows paid spend improves selection probability or FLOP allocation. The reward-option break-even is 0.10 USD per FLOP, but that choice matters only if selected as winner."
   },
-  "execution_envelope": {
-    "github_asset_build_publish_and_ci": "PERMITTED_AND_EXECUTED",
-    "technocore_signed_message": "NOT_EXECUTED because the existing DID signer/private key is unavailable in this execution surface; no key was requested, searched for, copied, reconstructed, or exposed",
-    "x_publication": "NOT_EXECUTED; separately confirmation-gated"
+  "latest_monitoring": {
+    "material_actionable_change": true,
+    "technocore_faucet_live": false,
+    "technocore_inference_or_poui_live": false,
+    "did_explicitly_tied_to_allocation_score_snapshot_conversion_mainnet": false,
+    "new_snapshot_or_eligibility_deadline": false,
+    "new_tokenomics_or_allocation_change_vs_2026_08_26_teaser": false,
+    "testnet_mainnet_date_change": false,
+    "new_explicit_per_task_reward_found": true,
+    "new_official_useful_task_found": true,
+    "task": "Technocore logo competition"
   },
-  "verification": {
-    "custom_live_refresh_workflow_green": true,
-    "source_lint_format_and_typecheck_green": true,
-    "full_repository_ci_green": true,
-    "openapi_contract_green": true,
-    "manifest_hashes_verified_from_downloaded_bundle": true,
-    "same_receipt_preserved": true,
-    "same_dedupe_preserved": true,
-    "same_did_preserved": true,
-    "new_did_created": false,
-    "funds_spent_usd": 0
-  },
-  "next_action_or_trigger": "The visualizer contribution is complete and repository-green. Do not create another visualizer, DID, or duplicate comment. A signed Technocore receipt may be added only when a trusted local signer can use the existing DID key without exposing it. X publication remains separately confirmation-gated. Continue first-party monitoring for a maintainer/FLOP Labs response, live faucet, usable inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, eligibility deadlines, tokenomics/date changes, or another official useful-agent task.",
-  "status": "OFFICIAL_VISUAL_TASK_V2_LIVE_BUNDLE_VERIFIED__FULL_REPOSITORY_CI_GREEN__SAME_DID_PROVENANCE__ZERO_COST"
+  "next_action_or_trigger": "Prepare brand-compliant Technocore logo candidates before 2026-08-31 while preserving the existing DID as provenance. Do not create another DID. Do not invent a submission route: verify a first-party submission instruction before public entry. Public X posting remains confirmation-gated. Continue first-party monitoring for faucet, inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, tokenomics/date changes, and competition clarification or winner-selection instructions."
 }
