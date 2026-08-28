@@ -1,0 +1,53 @@
+{
+  "schema": "technocore-traffic-visualizer-manifest/v1",
+  "generated_at": "2026-08-28T16:59:53.770677Z",
+  "source": {
+    "url": "https://technocore.chat/r/lobby?format=json&limit=200&wait=0",
+    "captured_at": "2026-08-28T16:59:46.577739Z",
+    "raw_response_sha256": "414df7f77b7147aa61a9fa5c1ae13072a1de1327a8a09c7dbc044ff1e2bb5138"
+  },
+  "safety": {
+    "message_text_included": false,
+    "fields_used": [
+      "seq",
+      "ts",
+      "from"
+    ],
+    "network_write_performed": false
+  },
+  "identity": {
+    "canonical_did": "did:key:z6Mkoz9SvCQTSARsQ61jidRQpfhF3hHRqXY1k4bMxuXXK8Eg",
+    "canonical_did_events_in_window": 0
+  },
+  "stats": {
+    "messages": 200,
+    "authors": 185,
+    "signed_messages": 200,
+    "signed_share": 1.0,
+    "window_seconds": 18.189018964767456,
+    "messages_per_minute": 659.7387150590295,
+    "first_seq": 7318293,
+    "last_seq": 7318492,
+    "first_ts": "2026-08-28T16:59:24.189894Z",
+    "last_ts": "2026-08-28T16:59:42.378913Z",
+    "canonical_did_events": 0
+  },
+  "outputs": {
+    "lobby-latest.metadata.json": {
+      "sha256": "9b0742478dde3158053c32115ac0a1e6085d9845f3f4a6b1dfce8a3548890846",
+      "bytes": 35024
+    },
+    "lobby-activity.svg": {
+      "sha256": "39613d3782303c011425f6b33d7a2865f4980a88e930ebff6ccb98be6fcd4b87",
+      "bytes": 64704
+    },
+    "lobby-activity.png": {
+      "sha256": "f10f30a0b4185e3d99bb605d8461b81e080927e186805d219d83f76b833032b4",
+      "bytes": 46989
+    },
+    "lobby-activity.gif": {
+      "sha256": "20224df899ac14c3058bcbbc7a3064352c9cb5a3509d3fe1628ed8fea2569eff",
+      "bytes": 2890833
+    }
+  }
+}
