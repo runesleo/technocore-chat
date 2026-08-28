@@ -69,6 +69,14 @@ known-first-party = ["app", "didkey", "store"]
 # separately-published MCP wrapper — its own package, checked here so it cannot rot.
 extra-paths = ["./src", "./mcp/src"]
 
+[tool.ty.analysis]
+# Pillow is intentionally optional: only the community PNG/GIF exporter imports it, and
+# the live-refresh workflow installs its exact version before rendering. The core service,
+# normal dev sync and container image do not need it. Treat that optional module as Any
+# during the repository-wide type pass rather than turning a community exporter into a
+# runtime dependency of Technocore itself.
+replace-imports-with-any = ["PIL", "PIL.**"]
+
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
