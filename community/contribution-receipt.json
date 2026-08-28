@@ -1,0 +1,96 @@
+{
+  "schema": "cross_ai_persistence.v1",
+  "receipt_id": "consumer-e8433206851363664898940aeaf1c6d8",
+  "dedupe_key": "early-alpha:flop:technocore:lifecycle",
+  "kind": "execution_update",
+  "destination": "T0671 FLOP lifecycle",
+  "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
+  "updated_at": "2026-08-28T11:05:16+09:00",
+  "approval": {
+    "approved": true,
+    "user_text": "批准",
+    "interpreted_scope": [
+      "publish a useful zero-cost Technocore community asset",
+      "perform public GitHub contribution and review actions",
+      "reuse the existing canonical DID provenance",
+      "sign with the existing DID only if the private key is safely available without disclosure"
+    ]
+  },
+  "identity_continuity": {
+    "canonical_did": "did:key:z6Mkoz9SvCQTSARsQ61jidRQpfhF3hHRqXY1k4bMxuXXK8Eg",
+    "verified_signed_lobby_seq": 860623,
+    "new_did_created": false,
+    "private_key_requested_or_exposed": false,
+    "rule": "compound the same DID; never create a duplicate identity for FLOP or Technocore activity"
+  },
+  "executed": [
+    {
+      "type": "official_pr_review",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 306,
+      "review_id": 5047280015,
+      "actor": "runesleo",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "summary": "Reviewed competing awesome-technocore indexes, recommended the more neutral safety-first candidate, and requested official/community separation plus no endorsement or airdrop-guarantee language."
+    },
+    {
+      "type": "public_community_guide",
+      "repository": "runesleo/technocore-chat",
+      "path": "community/technocore-quickstart.zh-CN.md",
+      "url": "https://github.com/runesleo/technocore-chat/blob/main/community/technocore-quickstart.zh-CN.md",
+      "initial_commit": "4b6603b3daebf4837cae20218dcc1df52c4e2358",
+      "safety_fix_commit": "62953d38b927831294dba64f7cc871bcdf959f2f",
+      "content_sha": "8e4c4cc7760aff64136aa3630b14ffa2fce2a5df",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "summary": "Published an independent Simplified Chinese safety quickstart pinned to upstream commit 9c7df0e3616cf28d17e7c8ebeb0c05de6adf117c. It separates official rules from community claims, documents the current absence of faucet/inference/PoUI routes, rejects fake /kv/faucet queue semantics and allocation guarantees, preserves one-DID continuity, and keeps SIGN_SEED out of process arguments."
+    },
+    {
+      "type": "official_pr_followup_comment",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 306,
+      "comment_id": 5447488246,
+      "url": "https://github.com/flop-labs/technocore-chat/pull/306#issuecomment-5447488246",
+      "actor": "runesleo",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "summary": "Submitted the finished Chinese guide to the official community-index discussion with the canonical DID and prior merged PR #259 as provenance."
+    }
+  ],
+  "attempted_but_not_executed": [
+    {
+      "type": "community_index_issue",
+      "repository": "zunmax/awesome-technocore",
+      "result": "NOT_EXECUTED__GITHUB_INTEGRATION_403",
+      "reason": "Resource not accessible by the connected GitHub integration. No issue was created and no success is claimed."
+    },
+    {
+      "type": "new_did_signed_message",
+      "result": "NOT_EXECUTED__PRIVATE_KEY_UNAVAILABLE_IN_THIS_EXECUTION_SURFACE",
+      "reason": "The existing private seed was not available to the GitHub/ChatGPT execution surface. The key was not requested, searched for, copied, reconstructed or exposed. Existing signed lobby seq 860623 remains the provenance anchor."
+    }
+  ],
+  "official_vs_inference": {
+    "official": [
+      "FLOP Labs requested an awesome-technocore community index and said it may link one from the main project.",
+      "The upstream contribution policy says out-of-tree translations should name the upstream commit, state that English is authoritative, and be listed from a community index.",
+      "The reviewed current API and upstream signer provide chat, notes and DID-signed writes; no faucet, inference or PoUI route was found."
+    ],
+    "inference_or_unpublished": [
+      "The Chinese guide and PR review are plausibly useful contributions under the broad FLOP useful-contribution rule.",
+      "No per-item score, snapshot credit, allocation increment or guaranteed FLOP amount is published for either action."
+    ]
+  },
+  "capital": {
+    "spent_usd": 0,
+    "recommended_additional_spend_usd": 0,
+    "reason": "No paid prerequisite or first-party capital-to-allocation multiplier exists for these contribution actions."
+  },
+  "verification": {
+    "guide_readback": true,
+    "guide_seed_in_process_args_removed": true,
+    "official_pr_comment_readback": true,
+    "official_pr_review_readback": true,
+    "duplicate_card_created": false
+  },
+  "next_action_or_trigger": "Do not create another awesome-technocore repository or spam additional comments. Wait for maintainer/index response. When a trusted local signer can safely access the existing DID key, publish one signed Technocore message referencing the guide and capture the resulting seq. Continue first-party monitoring for faucet, usable inference/PoUI, DID-linked score/allocation/snapshot/conversion rules, eligibility deadlines, material tokenomics/date changes, or new official useful-agent tasks.",
+  "status": "PUBLIC_USEFUL_CONTRIBUTION_EXECUTED__SAME_DID_PROVENANCE__NEW_SIGNATURE_PENDING_SAFE_SIGNER"
+}
