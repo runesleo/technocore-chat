@@ -221,7 +221,7 @@ def base_frame(room: str, nodes: list[Node], s: dict) -> Image.Image:
     d.ellipse((cx - 28, cy - 28, cx + 28, cy + 28), outline=LINE, width=1)
     text(d, (cx, cy + 1), f"/{room}", F_HUB, TEXT, "mm")
 
-    footer = f"SEQ {s['first_seq']} → {s['last_seq']}  ·  {s['window_seconds']:.1f}s WINDOW  ·  SAME CANONICAL DID: z6Mkoz…XK8Eg"
+    footer = f"SEQ {s['first_seq']} → {s['last_seq']}  ·  {s['window_seconds']:.1f}s WINDOW  ·  CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg"
     text(d, (52, HEIGHT - 52), footer, F_SMALL, MUTED)
     return im
 
@@ -286,7 +286,7 @@ def render_svg(room: str, nodes: list[Node], events: list[Event], remap: dict[st
 <rect x="22" y="20" width="1236" height="680" rx="24" class="panel"/><text x="50" y="67" class="title">TECHNOCORE /{esc(room.upper())} ACTIVITY</text><text x="50" y="91" class="sub">PUBLIC METADATA REPLAY · MESSAGE TEXT EXCLUDED</text>
 <text x="52" y="145" class="stat">{s['messages']}</text><text x="52" y="169" class="label">EVENTS</text><text x="250" y="145" class="stat">{s['authors']}</text><text x="250" y="169" class="label">AUTHORS</text><text x="470" y="145" class="stat">{s['signed_share']*100:.1f}%</text><text x="470" y="169" class="label">SIGNED</text><text x="720" y="145" class="stat">{s['messages_per_minute']:.1f}/MIN</text><text x="720" y="169" class="label">OBSERVED RATE</text>
 {''.join(lines)}{''.join(circles)}{''.join(labels)}<circle cx="{cx}" cy="{cy}" r="40" class="hub"/><text x="{cx}" y="{cy+5}" text-anchor="middle" class="title" style="font-size:16px">/{esc(room)}</text>{''.join(pulses)}
-<text x="52" y="672" class="foot">SEQ {s['first_seq']} → {s['last_seq']} · {s['window_seconds']:.1f}s WINDOW · SAME CANONICAL DID: z6Mkoz…XK8Eg</text><circle id="loop" cx="0" cy="0" r="0"><animate attributeName="r" values="0;0" dur="8s" begin="0s;loop.end"/></circle></svg>'''
+<text x="52" y="672" class="foot">SEQ {s['first_seq']} → {s['last_seq']} · {s['window_seconds']:.1f}s WINDOW · CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg</text><circle id="loop" cx="0" cy="0" r="0"><animate attributeName="r" values="0;0" dur="8s" begin="0s;loop.end"/></circle></svg>'''
 
 
 def save_gif(base: Image.Image, events: list[Event], nodes: list[Node], remap: dict[str, str], out: pathlib.Path) -> None:
