@@ -48,21 +48,56 @@ jobs:
           print(f"official lobby tail: {len(messages)} messages")
           PY
 
-      - name: Install raster exporter dependency
-        run: python -m pip install --disable-pip-version-check 'Pillow==12.0.0'
+      - name: Install exporter and lint dependencies
+        run: python -m pip install --disable-pip-version-check 'Pillow==12.0.0' 'ruff==0.16.2'
 
-      - name: Correct contribution provenance label
+      - name: Normalize visualizer source contracts
         shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          p = Path('community/technocore-traffic-visualizer/render_media.py')
-          old = 'SAME CANONICAL DID: z6Mkoz…XK8Eg'
-          new = 'CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg'
-          source = p.read_text(encoding='utf-8')
-          assert old in source or new in source
-          p.write_text(source.replace(old, new), encoding='utf-8')
+
+          root = Path('community/technocore-traffic-visualizer')
+          render = root / 'render.py'
+          media = root / 'render_media.py'
+
+          source = render.read_text(encoding='utf-8')
+          source = source.replace(
+              'from datetime import datetime, timezone',
+              'from datetime import UTC, datetime',
+          ).replace('datetime.now(timezone.utc)', 'datetime.now(UTC)')
+          render.write_text(source, encoding='utf-8')
+
+          source = media.read_text(encoding='utf-8')
+          source = source.replace(
+              'from datetime import datetime, timezone',
+              'from datetime import UTC, datetime',
+          ).replace('datetime.now(timezone.utc)', 'datetime.now(UTC)')
+          source = source.replace(
+              'zip(stat_x, stat_vals)',
+              'zip(stat_x, stat_vals, strict=True)',
+          )
+          source = source.replace(
+              'SAME CANONICAL DID: z6Mkoz…XK8Eg',
+              'CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg',
+          )
+          media.write_text(source, encoding='utf-8')
+
+          assert 'timezone.utc' not in render.read_text(encoding='utf-8')
+          assert 'timezone.utc' not in media.read_text(encoding='utf-8')
+          assert 'zip(stat_x, stat_vals, strict=True)' in media.read_text(encoding='utf-8')
+          assert 'CONTRIBUTION PROVENANCE: z6Mkoz…XK8Eg' in media.read_text(encoding='utf-8')
           PY
+          python -m py_compile \
+            community/technocore-traffic-visualizer/render.py \
+            community/technocore-traffic-visualizer/render_media.py
+          ruff check \
+            community/technocore-traffic-visualizer/render.py \
+            community/technocore-traffic-visualizer/render_media.py
+          ruff format --check \
+            community/technocore-traffic-visualizer/render.py \
+            community/technocore-traffic-visualizer/render_media.py
 
       - name: Render HTML, SVG, PNG, GIF and metadata-only receipt
         shell: bash
@@ -129,7 +164,8 @@ jobs:
           set -euo pipefail
           git config user.name 'runesleo-visualizer-bot'
           git config user.email '245669230+runesleo@users.noreply.github.com'
-          git add community/technocore-traffic-visualizer/render_media.py \
+          git add community/technocore-traffic-visualizer/render.py \
+            community/technocore-traffic-visualizer/render_media.py \
             community/technocore-traffic-visualizer/artifacts
           if git diff --cached --quiet; then
             echo 'No artifact changes.'
