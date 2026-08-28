@@ -5,7 +5,7 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-28T14:50:03+09:00",
+  "updated_at": "2026-08-28T21:40:40+08:00",
   "approval": {
     "approved": true,
     "user_text": "批准",
@@ -64,8 +64,23 @@
       "submitted_at": "2026-08-28T05:49:08Z",
       "actor": "runesleo",
       "result": "PUBLIC_AND_READBACK_VERIFIED",
-      "finding": "PR #420 places time.monotonic() before _buckets_lock. Two callers can sample time in A-then-B order but acquire the lock B-then-A, so the second mutation can use stale time, make tokens negative, issue a false Retry-After, and rewind the bucket last timestamp.",
-      "requested_fix": "Move the monotonic clock sample inside _buckets_lock and add a deterministic reverse-sample/reverse-acquisition regression asserting last never regresses and an available bucket is not refused.",
+      "finding": "PR #420 sampled time.monotonic() before _buckets_lock. Reverse sample/acquisition order could compute a negative refill, falsely refuse an available bucket, emit a false Retry-After, and rewind the bucket last timestamp.",
+      "requested_fix": "Move time.monotonic() inside _buckets_lock and add a deterministic reverse sample/acquisition regression asserting last never regresses and an available bucket is not refused.",
+      "same_did_provenance": true,
+      "cash_cost_usd": 0
+    },
+    {
+      "type": "official_pr_re_review_approval",
+      "repository": "flop-labs/technocore-chat",
+      "pull_request": 420,
+      "head_sha": "42601f94812b46888f7455b2e10e46e28d8beddf",
+      "review_id": 5051622678,
+      "review_node_id": "PRR_kwDOT265G88AAAABLRmlFg",
+      "review_state": "APPROVED",
+      "submitted_at": "2026-08-28T13:40:40Z",
+      "actor": "runesleo",
+      "result": "PUBLIC_AND_READBACK_VERIFIED",
+      "verification": "Requested fix is present: time.monotonic() now samples inside _buckets_lock. The new test_take_samples_the_clock_inside_the_lock forces the reverse acquisition ordering and asserts no false refusal, non-negative tokens, and monotone last.",
       "same_did_provenance": true,
       "cash_cost_usd": 0
     }
@@ -85,44 +100,66 @@
   ],
   "official_vs_inference": {
     "official": [
-      "FLOP Labs requested an awesome-technocore community index and said it may link one from the main project.",
-      "The upstream contribution policy says out-of-tree translations should name the upstream commit, state that English is authoritative, and be listed from a community index.",
-      "The reviewed current API and upstream signer provide chat, notes and DID-signed writes; no faucet, inference or PoUI route was found."
+      "FLOP Teaser remains v0.1 draft, updated 2026-08-26; Testnet remains Q4 2026, Mainnet Q1 2027.",
+      "Agent genesis allocation remains up to 1.2bn FLOP; agents are described as claiming test-token faucet and spending it on inference, with airdrop based largely on testnet inference spend and every 3 FLOP spent on inference unlocking 1 airdropped FLOP.",
+      "Live Technocore OpenAPI remains version 0.10.0 and exposes no faucet, inference, or PoUI route.",
+      "Official technocore-chat PR #420 head advanced to 42601f94812b46888f7455b2e10e46e28d8beddf and explicitly incorporated the requested clock-inside-lock fix plus regression test; the follow-up review is APPROVED."
     ],
     "inference_or_unpublished": [
-      "The Chinese guide and PR reviews are plausibly useful contributions under the broad FLOP useful-contribution rule.",
-      "No per-item score, snapshot credit, allocation increment or guaranteed FLOP amount is published for any of these actions."
+      "The PR #420 review/approval is a useful upstream contribution that compounds the same DID provenance, but FLOP Labs has not published any per-review score, snapshot credit, allocation increment, or guaranteed FLOP amount.",
+      "No new first-party rule was found tying this GitHub review specifically to FLOP allocation, score, snapshot, conversion, or mainnet eligibility."
     ]
   },
   "capital": {
     "spent_usd": 0,
     "recommended_additional_spend_usd": 0,
-    "reason": "No paid prerequisite or first-party capital-to-allocation multiplier exists for these contribution actions."
+    "reason": "No paid prerequisite or first-party capital-to-allocation multiplier exists for this contribution path; faucet/inference is not live."
   },
   "verification": {
     "guide_readback": true,
     "guide_seed_in_process_args_removed": true,
     "official_pr_comment_readback": true,
     "official_pr_review_readback": true,
-    "official_pr_420_review_readback": true,
+    "duplicate_card_created": false,
+    "official_pr_420_change_request_readback": true,
+    "official_pr_420_approval_readback": true,
+    "official_pr_420_current_head": "42601f94812b46888f7455b2e10e46e28d8beddf",
+    "flop_teaser_version": "0.1",
+    "flop_teaser_updated": "2026-08-26",
+    "technocore_openapi_version": "0.10.0",
+    "technocore_faucet_route_present": false,
+    "technocore_inference_route_present": false,
+    "technocore_poui_route_present": false,
     "same_receipt_preserved": true,
     "same_dedupe_preserved": true,
     "same_did_preserved": true,
     "new_did_created": false,
-    "funds_spent_usd": 0,
-    "duplicate_card_created": false
+    "funds_spent_usd": 0
   },
-  "next_action_or_trigger": "Monitor official PR #420 for an author update. If the clock sample moves inside _buckets_lock and a regression test covers reverse sample/acquisition order, re-review the exact new head once; do not add duplicate comments. Keep PR #306/index work in wait-for-maintainer state. When a trusted local signer can safely access the existing DID key, publish one signed Technocore message referencing the strongest accepted contribution and capture its seq. Continue first-party monitoring for faucet, usable inference/PoUI, DID-linked score/allocation/snapshot/conversion rules, eligibility deadlines, material tokenomics/date changes, or new official useful-agent tasks.",
-  "status": "PUBLIC_USEFUL_CONTRIBUTION_REVIEW_EXECUTED__PR420_CHANGES_REQUESTED__SAME_DID__ZERO_COST",
+  "next_action_or_trigger": "PR #420 requested fix is now approved on head 42601f94812b46888f7455b2e10e46e28d8beddf. Do not add another comment unless the head materially changes or a maintainer asks a concrete follow-up; otherwise wait for merge/maintainer action. Continue first-party monitoring for a live faucet, usable inference/PoUI, DID-linked allocation/score/snapshot/conversion rules, eligibility deadlines, tokenomics/date changes, or a new official useful-agent task. Reuse the same DID; do not create another identity.",
+  "status": "PUBLIC_USEFUL_CONTRIBUTION_REVIEW_APPROVED__PR420_HEAD_42601F__SAME_DID__ZERO_COST",
   "latest_execution": {
-    "observed_at": "2026-08-28T14:50:03+09:00",
-    "type": "official_pr_concurrency_review",
+    "observed_at": "2026-08-28T21:40:40+08:00",
+    "type": "official_pr_re_review_approval",
     "official_surface": "flop-labs/technocore-chat PR #420",
-    "review_id": 5048258132,
-    "state": "CHANGES_REQUESTED",
+    "head_sha": "42601f94812b46888f7455b2e10e46e28d8beddf",
+    "review_id": 5051622678,
+    "state": "APPROVED",
     "material_flop_rule_change": false,
     "actionable_contribution_executed": true,
-    "summary": "Submitted and verified a concrete concurrency review that catches a stale-clock ordering defect left outside the new rate-limit lock. This compounds the existing canonical DID contribution history without creating a new identity or spending money.",
-    "official_vs_inference": "The PR diff and review state are official GitHub facts. Whether this review earns any FLOP, score, snapshot credit or allocation remains unpublished and must not be inferred."
+    "summary": "Author updated PR #420 to implement the exact clock-inside-lock fix requested in the prior review and added a targeted regression. Re-review verified the new head and APPROVED it, compounding the same canonical DID contribution history at zero cost.",
+    "official_vs_inference": "The PR head, code diff, test and review state are first-party GitHub facts. Whether the review earns FLOP, score, snapshot credit or allocation remains unpublished and is not inferred."
+  },
+  "latest_monitoring": {
+    "checked_at": "2026-08-28T21:40:40+08:00",
+    "flop_teaser_material_change": false,
+    "technocore_faucet_live": false,
+    "technocore_inference_or_poui_live": false,
+    "did_explicitly_tied_to_allocation_score_snapshot_conversion_mainnet": false,
+    "new_snapshot_or_eligibility_deadline": false,
+    "new_tokenomics_or_allocation_change": false,
+    "testnet_mainnet_date_change": false,
+    "new_explicit_reward_task_found": false,
+    "actionable_existing_contribution_followup": "PR #420 author update was actionable and was re-reviewed/approved."
   }
 }
