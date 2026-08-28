@@ -5,7 +5,7 @@
   "kind": "execution_update",
   "destination": "T0671 FLOP lifecycle",
   "merge_strategy": "update_existing_receipt_in_place__do_not_create_new_card",
-  "updated_at": "2026-08-29T03:33:54+08:00",
+  "updated_at": "2026-08-29T05:38:58+08:00",
   "status": "UNCHANGED_AFTER_FIRST_PARTY_RECHECK__LOGO_COMPETITION_REMAINS_ACTIONABLE__NO_NEW_FLOP_PROTOCOL_TRIGGER",
   "identity_continuity": {
     "canonical_did": "did:key:z6Mkoz9SvCQTSARsQ61jidRQpfhF3hHRqXY1k4bMxuXXK8Eg",
@@ -96,7 +96,7 @@
     "reason": "No new paid prerequisite or first-party capital-to-allocation multiplier exists. The logo competition remains free to enter."
   },
   "latest_monitoring": {
-    "checked_at": "2026-08-29T03:33:54+08:00",
+    "checked_at": "2026-08-29T05:38:58+08:00",
     "material_actionable_change_since_prior_run": false,
     "technocore_faucet_live": false,
     "technocore_inference_or_poui_live": false,
@@ -109,15 +109,13 @@
     "known_actionable_task": "Technocore logo competition",
     "known_actionable_task_deadline": "2026-08-31",
     "first_party_sources_checked": [
-      "https://flop.finance/",
       "https://flop.finance/teaser/",
       "https://flop.finance/brand/",
       "https://technocore.chat/openapi.json",
-      "https://technocore.chat/humans",
       "https://github.com/flop-labs/technocore-chat"
     ],
     "first_party_x_live_access": "BLOCKED_403_ON_DIRECT_PROFILE_FETCH",
-    "coverage_note": "No third-party/community source was promoted to evidence. Direct X first-party fetch is currently blocked by X, so this run makes no claim about unindexed X-only posts beyond the previously verified competition already preserved in the receipt."
+    "coverage_note": "No third-party/community source was promoted to evidence. Direct X first-party fetch remains blocked by X, so this run makes no claim about unindexed X-only posts beyond the previously verified competition already preserved in the receipt."
   },
   "next_action_or_trigger": "Do not create another card, DID, duplicate visualizer, or duplicate competition notification. Keep preparing the already-known zero-cost logo entry before 2026-08-31 under the existing execution envelope. Notify only on a newly verified first-party trigger: live faucet, usable inference/PoUI, explicit DID-linked allocation/score/snapshot/conversion rules, a new eligibility deadline, tokenomics/date change, competition submission clarification, or another official rewarded useful-agent task."
 }
