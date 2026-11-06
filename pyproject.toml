@@ -106,8 +106,9 @@ source_paths = ["src"]
 only_mutate = ["src/app.py", "src/store.py", "src/didkey.py", "src/limit.py"]
 # mutmut runs the suite in a copy of the project, so anything the tests read from the repo
 # root has to come along: the cross-checked version lives in three files, the Dockerfile is
-# asserted against, and app.py reads SKILL.md at import.
-also_copy = ["SKILL.md", "docker", "mcp"]
+# asserted against, app.py reads SKILL.md at import, test_rooms.py checks README.md, and
+# test_signer.py runs scripts/sign.py.
+also_copy = ["SKILL.md", "README.md", "docker", "mcp", "scripts"]
 # test_mcp.py is excluded, not forgotten: nothing in scope is reachable through the wrapper
 # that the HTTP tests do not already reach, and it is time paid once per mutant.
 # test_app.py was split into tests/http/ and tests/unit/; every shard selects the same
@@ -117,6 +118,11 @@ pytest_add_cli_args_test_selection = [
     "tests/unit",
     "tests/test_store_stateful.py",
 ]
+# test_store_doc.py is excluded for a different reason: it diffs docs/store.md against
+# what `inspect` finds in store.py, and in the mutants copy store.py also carries mutmut's
+# generated x__*__mutmut_N functions, so the clean baseline can never match. It guards the
+# doc, not behaviour, and still runs in CI and in the Mutation workflow's Baseline step.
+pytest_add_cli_args = ["--ignore=tests/unit/test_store_doc.py"]
 
 # Not an installable package: src/ is copied into the image and imported by path.
 # Without this, uv tries to build a wheel and fails.
